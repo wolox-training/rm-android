@@ -18,13 +18,13 @@ idea {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "ar.com.wolox.android.example"
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0.0"
 
@@ -89,7 +89,7 @@ jacocoAndroidUnitTestReport {
 }
 
 buildscript {
-    ext.androidx_core_version = '1.0.1'
+    ext.androidx_core_version = '1.0.2'
     ext.androidx_recycler_version = '1.0.0'
     ext.androidx_material_version = '1.0.0'
     ext.dagger_version = '2.22.1'
