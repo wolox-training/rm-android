@@ -3,20 +3,20 @@
 <shape
     xmlns:android="http://schemas.android.com/apk/res/android">
     <stroke
-        android:width="1dp"
+        android:width="@dimen/spacing_tiniest"
         android:color="@color/colorPrimary"/>
     <corners
-        android:radius="2dp" />
+        android:radius="@dimen/spacing_small" />
 
     <padding
-        android:left="1dp"
-        android:right="1dp"
-        android:top="1dp"
-        android:bottom="1dp"/>
+        android:left="@dimen/spacing_tiniest"
+        android:right="@dimen/spacing_tiniest"
+        android:top="@dimen/spacing_tiniest"
+        android:bottom="@dimen/spacing_tiniest"/>
     <stroke
-        android:width="4dp"
-        android:color="#FFFFFF" />
-    <corners android:radius= "0dp" />
+        android:width="@dimen/spacing_medium"
+        android:color="@color/colorWhite" />
+    <corners android:radius= "@dimen/spacing_none" />
     <solid android:color="@color/colorPrimary"
         />
 </shape>
