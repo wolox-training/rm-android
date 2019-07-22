@@ -13,22 +13,22 @@ class LoginFragment : WolmoFragment<LoginPresenter>(), ILoginView {
     override fun layout(): Int = R.layout.fragment_login
 
     override fun setListeners() {
-        vLoginButton.setOnClickListener {
-            presenter.startLogin(vUsername?.text.toString(), vPassword?.text.toString())
+        vLoginButton?.setOnClickListener {
+            presenter.startLogin(vLoginUsername?.text.toString(), vLoginPassword?.text.toString())
         }
     }
 
     override fun onEmptyForm() {
-        vUsername?.let {
+        vLoginUsername?.let {
             it.text.ifBlank { it.setError(resources.getString(R.string.login_required_field)) }
         }
-        vPassword?.let {
+        vLoginPassword?.let {
             it.text.ifBlank { it.setError(resources.getString(R.string.login_required_field)) }
         }
     }
 
     override fun onWrongUsernameFormat() {
-        vUsername?.setError(resources.getString(R.string.login_wrong_username_format))
+        vLoginUsername?.setError(resources.getString(R.string.login_wrong_username_format))
     }
 
     override fun onUserLoggedIn() {
