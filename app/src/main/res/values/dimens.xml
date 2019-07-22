@@ -29,6 +29,7 @@
     <dimen name="spacing_huge_extra">46dp</dimen>
     <dimen name="spacing_largest">54dp</dimen>
     <dimen name="spacing_largest_extra">64dp</dimen>
+    <dimen name="spacing_largest_extra_image">104dp</dimen>
 
     <!-- Anti-spacing -->
     <dimen name="negative_spacing_medium">-4dp</dimen>
@@ -46,4 +47,10 @@
     <dimen name="font_huge">24sp</dimen>
 
     <!-- Add your custom dimens here -->
+
+    <!-- Custom layout elements spacing -->
+    <dimen name="spacing_medium_element">48dp</dimen>
+    <dimen name="spacing_big_element">56dp</dimen>
+
+
 </resources>
