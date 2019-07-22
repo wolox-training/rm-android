@@ -8,4 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <!-- Layout Styles -->
+    <style name="styleBigSpacing">
+        <item name="android:layout_height">@dimen/spacing_big_element</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="styleMediumSpacing">
+        <item name="android:layout_height">@dimen/spacing_medium_element</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
 </resources>
