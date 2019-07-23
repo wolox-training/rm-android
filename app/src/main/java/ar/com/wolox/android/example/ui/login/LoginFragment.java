@@ -15,7 +15,7 @@ import ar.com.wolox.wolmo.core.fragment.WolmoFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static ar.com.wolox.android.example.utils.Extras.ExternalLinks.TERMSCONDITIONS;
+import static ar.com.wolox.android.example.BaseConfiguration.TERMS_CONDITIONS_URL;
 
 /**
  *
@@ -23,12 +23,10 @@ import static ar.com.wolox.android.example.utils.Extras.ExternalLinks.TERMSCONDI
 public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILoginView {
 
     @BindView(R.id.vLoginButton) Button loginButton;
+    @BindView(R.id.vSignupButton) Button signupButton;
     @BindView(R.id.vLoginUsername) EditText username;
     @BindView(R.id.vLoginPassword) EditText password;
-
-    private Button signupButton;
-
-    private TextView termsConditions;
+    @BindView(R.id.vLoginTermsConditions) TextView termsConditions;
 
     @Override
     public int layout() {
@@ -50,7 +48,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
             startActivity(intent);
         });
         termsConditions.setOnClickListener(view -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(TERMSCONDITIONS));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_CONDITIONS_URL));
             startActivity(intent);
         });
     }
