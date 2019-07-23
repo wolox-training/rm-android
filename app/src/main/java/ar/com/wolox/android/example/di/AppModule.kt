@@ -2,9 +2,9 @@ package ar.com.wolox.android.example.di
 
 import ar.com.wolox.android.example.ui.example.ExampleActivity
 import ar.com.wolox.android.example.ui.example.ExampleFragment
-import ar.com.wolox.android.example.ui.home.HomePageActivity
 import ar.com.wolox.android.example.ui.login.LoginActivity
 import ar.com.wolox.android.example.ui.login.LoginFragment
+import ar.com.wolox.android.example.ui.home.HomePageActivity
 import ar.com.wolox.android.example.ui.signup.SignupActivity
 
 import dagger.Module
