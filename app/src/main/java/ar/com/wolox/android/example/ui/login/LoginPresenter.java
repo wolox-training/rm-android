@@ -1,6 +1,7 @@
 package ar.com.wolox.android.example.ui.login;
 
 import android.util.Log;
+import android.util.Patterns;
 
 import java.util.Objects;
 
@@ -14,7 +15,7 @@ import ar.com.wolox.wolmo.core.presenter.BasePresenter;
  */
 public class LoginPresenter extends BasePresenter<ILoginView> {
 
-    UserSession mUserSession;
+    private UserSession mUserSession;
 
     @Inject
     public LoginPresenter(UserSession mUserSession) {
@@ -26,12 +27,17 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      * @param username Username
      * @param password Password
      */
-    public void startLogin(String username, String password) {
+    public void loginButtonClicked(String username, String password) {
         try {
             if (this.mUserSession.getUsername() == null ||
                     this.mUserSession.getPassword() == null) {
                 if (username.isEmpty() || password.isEmpty()) {
-                    getView().onEmptyForm();
+                    if (username.isEmpty()) {
+                        getView().onEmptyUsername();
+                    }
+                    if (password.isEmpty()) {
+                        getView().onEmptyPassword();
+                    }
                 } else if (!evaluateUsernameFormat(username)) {
                     getView().onWrongUsernameFormat();
                 } else {
@@ -48,7 +54,6 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
     }
 
     private Boolean evaluateUsernameFormat(String email) {
-        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-        return email.matches(regex);
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }

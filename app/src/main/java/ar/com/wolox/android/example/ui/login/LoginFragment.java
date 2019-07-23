@@ -12,6 +12,8 @@ import ar.com.wolox.android.R;
 import ar.com.wolox.android.example.ui.home.HomePageActivity;
 import ar.com.wolox.android.example.ui.signup.SignupActivity;
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static ar.com.wolox.android.example.utils.Extras.ExternalLinks.TERMSCONDITIONS;
 
@@ -20,11 +22,9 @@ import static ar.com.wolox.android.example.utils.Extras.ExternalLinks.TERMSCONDI
  */
 public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILoginView {
 
-    private EditText username;
-
-    private EditText password;
-
-    private Button loginButton;
+    @BindView(R.id.vLoginButton) Button loginButton;
+    @BindView(R.id.vLoginUsername) EditText username;
+    @BindView(R.id.vLoginPassword) EditText password;
 
     private Button signupButton;
 
@@ -37,16 +37,14 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
 
     @Override
     public void init() {
-        this.username = Objects.requireNonNull(getView()).findViewById(R.id.vLoginUsername);
-        this.password = Objects.requireNonNull(getView()).findViewById(R.id.vLoginPassword);
-        this.loginButton = Objects.requireNonNull(getView()).findViewById(R.id.vLoginButton);
-        this.signupButton = Objects.requireNonNull(getView()).findViewById(R.id.vSignupButton);
-        this.termsConditions = Objects.requireNonNull(getView()).findViewById(R.id.vLoginTermsConditions);
+        ButterKnife.bind(this, Objects.requireNonNull(getActivity()));
     }
 
     @Override
     public void setListeners() {
-        loginButton.setOnClickListener(view -> getPresenter().startLogin(username.getText().toString(), password.getText().toString()));
+        loginButton.setOnClickListener(view ->
+                getPresenter().loginButtonClicked(username.getText().toString(), password.getText().toString())
+        );
         signupButton.setOnClickListener(view -> {
             Intent intent = new Intent(getActivity(), SignupActivity.class);
             startActivity(intent);
@@ -58,14 +56,13 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     }
 
     @Override
-    public void onEmptyForm() {
-        if (username.getText().toString().isEmpty()) {
-            username.setError(getResources().getString(R.string.login_required_field));
-        }
+    public void onEmptyUsername() {
+        username.setError(getResources().getString(R.string.login_required_field));
+    }
 
-        if (password.getText().toString().isEmpty()) {
-            password.setError(getResources().getString(R.string.login_required_field));
-        }
+    @Override
+    public void onEmptyPassword() {
+        password.setError(getResources().getString(R.string.login_required_field));
     }
 
     @Override
@@ -78,4 +75,5 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
         Intent intent = new Intent(getActivity(), HomePageActivity.class);
         startActivity(intent);
     }
+
 }

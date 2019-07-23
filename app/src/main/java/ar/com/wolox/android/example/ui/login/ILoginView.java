@@ -5,7 +5,9 @@ package ar.com.wolox.android.example.ui.login;
  */
 public interface ILoginView {
 
-    void onEmptyForm();
+    void onEmptyUsername();
+
+    void onEmptyPassword();
 
     void onWrongUsernameFormat();
 
