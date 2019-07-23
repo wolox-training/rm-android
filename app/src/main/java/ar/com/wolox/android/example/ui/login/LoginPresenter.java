@@ -14,7 +14,7 @@ import ar.com.wolox.wolmo.core.presenter.BasePresenter;
  */
 public class LoginPresenter extends BasePresenter<ILoginView> {
 
-    UserSession mUserSession;
+    private UserSession mUserSession;
 
     @Inject
     public LoginPresenter(UserSession mUserSession) {
@@ -48,7 +48,6 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
     }
 
     private Boolean evaluateUsernameFormat(String email) {
-        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-        return email.matches(regex);
+        return email.matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$");
     }
 }
