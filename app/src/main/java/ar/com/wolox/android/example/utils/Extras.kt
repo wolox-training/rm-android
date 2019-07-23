@@ -14,4 +14,8 @@ object Extras {
         const val USERNAME = "username"
         const val PASSWORD = "password"
     }
+
+    object ExternalLinks {
+        const val TERMSCONDITIONS = "https://www.wolox.com.ar"
+    }
 }

@@ -40,7 +40,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                     getView().onUserLoggedIn();
                 }
             } else {
-                Log.d(getClass().getSimpleName(), "already logged in");
+                getView().onUserLoggedIn();
             }
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(), Objects.requireNonNull(e.getMessage()));
