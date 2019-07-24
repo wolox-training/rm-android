@@ -13,11 +13,11 @@ public interface ILoginView {
 
     void onWrongUsernameFormat();
 
+    void goToTermsConditionsScreen();
+
     void onUsernameAlreadyStored(String usernameStored);
 
     void goToHomePageScreen();
 
     void goToSignUpScreen();
-
-    void goToTermsConditionsScreen();
 }
