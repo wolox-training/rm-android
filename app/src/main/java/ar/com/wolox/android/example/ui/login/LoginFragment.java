@@ -1,15 +1,21 @@
 package ar.com.wolox.android.example.ui.login;
 
-import android.util.Log;
+import android.content.Intent;
+import android.net.Uri;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.Objects;
 
 import ar.com.wolox.android.R;
+import ar.com.wolox.android.example.ui.home.HomePageActivity;
+import ar.com.wolox.android.example.ui.signup.SignUpActivity;
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static ar.com.wolox.android.example.BaseConfiguration.TERMS_CONDITIONS_URL;
 
 /**
  *
@@ -17,8 +23,10 @@ import butterknife.ButterKnife;
 public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILoginView {
 
     @BindView(R.id.vLoginButton) Button loginButton;
+    @BindView(R.id.vSignupButton) Button signupButton;
     @BindView(R.id.vLoginUsername) EditText username;
     @BindView(R.id.vLoginPassword) EditText password;
+    @BindView(R.id.vLoginTermsConditions) TextView termsConditions;
 
     @Override
     public int layout() {
@@ -33,8 +41,10 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     @Override
     public void setListeners() {
         loginButton.setOnClickListener(view ->
-                getPresenter().loginButtonClicked(username.getText().toString(), password.getText().toString())
+                getPresenter().onLoginButtonClicked(username.getText().toString(), password.getText().toString())
         );
+        signupButton.setOnClickListener(view -> getPresenter().onSignUpButtonClicked());
+        termsConditions.setOnClickListener(view -> getPresenter().onTermsConditionsButtonClicked());
     }
 
     @Override
@@ -53,8 +63,22 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     }
 
     @Override
-    public void onUserLoggedIn() {
-        Log.d(getClass().getSimpleName(), "Logged In");
+    public void goToHomePageScreen() {
+        Intent intent = new Intent(getActivity(), HomePageActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void goToSignUpScreen() {
+        Intent intent = new Intent(getActivity(), SignUpActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    @Override
+    public void goToTermsConditionsScreen() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_CONDITIONS_URL));
+        startActivity(intent);
     }
 
 }

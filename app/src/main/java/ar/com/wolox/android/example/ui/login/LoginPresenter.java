@@ -27,7 +27,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      * @param username Username
      * @param password Password
      */
-    public void loginButtonClicked(String username, String password) {
+    public void onLoginButtonClicked(String username, String password) {
         try {
             if (this.mUserSession.getUsername() == null ||
                     this.mUserSession.getPassword() == null) {
@@ -43,14 +43,22 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 } else {
                     mUserSession.setUsername(username);
                     mUserSession.setPassword(password);
-                    getView().onUserLoggedIn();
+                    getView().goToHomePageScreen();
                 }
             } else {
-                Log.d(getClass().getSimpleName(), "already logged in");
+                getView().goToHomePageScreen();
             }
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(), Objects.requireNonNull(e.getMessage()));
         }
+    }
+
+    public void onSignUpButtonClicked() {
+        getView().goToSignUpScreen();
+    }
+
+    public void onTermsConditionsButtonClicked() {
+        getView().goToTermsConditionsScreen();
     }
 
     private Boolean evaluateUsernameFormat(String email) {

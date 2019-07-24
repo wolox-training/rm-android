@@ -11,5 +11,9 @@ public interface ILoginView {
 
     void onWrongUsernameFormat();
 
-    void onUserLoggedIn();
+    void goToHomePageScreen();
+
+    void goToSignUpScreen();
+
+    void goToTermsConditionsScreen();
 }
