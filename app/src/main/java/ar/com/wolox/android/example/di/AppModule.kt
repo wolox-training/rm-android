@@ -5,7 +5,7 @@ import ar.com.wolox.android.example.ui.example.ExampleFragment
 import ar.com.wolox.android.example.ui.login.LoginActivity
 import ar.com.wolox.android.example.ui.login.LoginFragment
 import ar.com.wolox.android.example.ui.home.HomePageActivity
-import ar.com.wolox.android.example.ui.signup.SignupActivity
+import ar.com.wolox.android.example.ui.signup.SignUpActivity
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -26,7 +26,7 @@ abstract class AppModule {
     internal abstract fun loginFragment(): LoginFragment
 
     @ContributesAndroidInjector
-    internal abstract fun signupActivity(): SignupActivity
+    internal abstract fun signupActivity(): SignUpActivity
 
     @ContributesAndroidInjector
     internal abstract fun homepageActivity(): HomePageActivity

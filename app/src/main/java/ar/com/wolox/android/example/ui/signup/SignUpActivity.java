@@ -6,7 +6,7 @@ import ar.com.wolox.wolmo.core.activity.WolmoActivity;
 /**
  *
  */
-public class SignupActivity extends WolmoActivity {
+public class SignUpActivity extends WolmoActivity {
 
     @Override
     protected int layout() {

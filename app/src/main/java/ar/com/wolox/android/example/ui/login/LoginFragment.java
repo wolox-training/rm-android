@@ -10,7 +10,7 @@ import java.util.Objects;
 
 import ar.com.wolox.android.R;
 import ar.com.wolox.android.example.ui.home.HomePageActivity;
-import ar.com.wolox.android.example.ui.signup.SignupActivity;
+import ar.com.wolox.android.example.ui.signup.SignUpActivity;
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,16 +41,10 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     @Override
     public void setListeners() {
         loginButton.setOnClickListener(view ->
-                getPresenter().loginButtonClicked(username.getText().toString(), password.getText().toString())
+                getPresenter().onLoginButtonClicked(username.getText().toString(), password.getText().toString())
         );
-        signupButton.setOnClickListener(view -> {
-            Intent intent = new Intent(getActivity(), SignupActivity.class);
-            startActivity(intent);
-        });
-        termsConditions.setOnClickListener(view -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_CONDITIONS_URL));
-            startActivity(intent);
-        });
+        signupButton.setOnClickListener(view -> getPresenter().onSignUpButtonClicked());
+        termsConditions.setOnClickListener(view -> getPresenter().onTermsConditionsButtonClicked());
     }
 
     @Override
@@ -69,8 +63,21 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     }
 
     @Override
-    public void onUserLoggedIn() {
+    public void goToHomePageScreen() {
         Intent intent = new Intent(getActivity(), HomePageActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void goToSignUpScreen() {
+        Intent intent = new Intent(getActivity(), SignUpActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    @Override
+    public void goToTermsConditionsScreen() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_CONDITIONS_URL));
         startActivity(intent);
     }
 
