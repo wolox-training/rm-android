@@ -40,8 +40,9 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      */
     public void onLoginButtonClicked(String username, String password) {
         try {
-            if (mUserSession.getUsername() == null ||
-                    mUserSession.getPassword() == null) {
+            if (mUserSession.getAuthenticated()) {
+                getView().goToHomePageScreen();
+            } else {
                 if (username.isEmpty() && password.isEmpty()) {
                     getView().onEmptyUsernameAndPassword();
                 } else if (username.isEmpty()) {
@@ -53,8 +54,6 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 } else {
                     getView().onWrongUsernameFormat();
                 }
-            } else {
-                getView().goToHomePageScreen();
             }
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(), Objects.requireNonNull(e.getMessage()));
@@ -93,7 +92,8 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
                 assert response.body() != null;
                 if (response.body().size() > 0) {
-                    Log.d(getClass().getSimpleName(), "validateUser: Ok");
+                    mUserSession.setAuthenticated(true);
+                    getView().goToHomePageScreen();
                 } else {
                     Log.d(getClass().getSimpleName(), "validateUser: NOT Ok");
                 }
@@ -108,6 +108,10 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
     @Override
     public void onViewAttached() {
-        restoreFormOnInit();
+        if (mUserSession.getAuthenticated()) {
+            getView().goToHomePageScreen();
+        } else {
+            restoreFormOnInit();
+        }
     }
 }
