@@ -45,7 +45,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
         );
         signUpButton.setOnClickListener(view -> getPresenter().onSignUpButtonClicked());
         termsConditions.setOnClickListener(view -> getPresenter().onTermsConditionsButtonClicked());
-        getPresenter().restoreFormOnInit();
     }
 
     @Override
@@ -71,7 +70,9 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
 
     @Override
     public void onUsernameAlreadyStored(String usernameStored) {
-        username.setText(usernameStored);
+        if (username != null) {
+            username.setText(usernameStored);
+        }
     }
 
     @Override
@@ -99,4 +100,9 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
         getPresenter().saveFormBeforeDestroy(username.getText().toString());
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        getPresenter().attachView(this);
+    }
 }

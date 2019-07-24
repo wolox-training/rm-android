@@ -66,14 +66,18 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         }
     }
 
-    public void restoreFormOnInit() {
+    private Boolean evaluateUsernameFormat(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private void restoreFormOnInit() {
         if (mUserSession.getUsername() != null) {
             getView().onUsernameAlreadyStored(mUserSession.getUsername());
         }
     }
 
-    private Boolean evaluateUsernameFormat(String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    @Override
+    public void onViewAttached() {
+        restoreFormOnInit();
     }
-
 }
