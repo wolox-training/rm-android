@@ -9,7 +9,11 @@ public interface ILoginView {
 
     void onEmptyPassword();
 
+    void onEmptyUsernameAndPassword();
+
     void onWrongUsernameFormat();
+
+    void onUsernameAlreadyStored(String usernameStored);
 
     void goToHomePageScreen();
 

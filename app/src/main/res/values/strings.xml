@@ -17,6 +17,6 @@
     <string name="login_log_in">LOG IN</string>
     <string name="login_sign_up">SIGN UP</string>
     <string name="login_terms_conditions">By joining you agree to our <u>Terms &amp; Conditions</u></string>
-    <string name="login_required_field">This field is required</string>
+    <string name="login_required_field">All fields are required</string>
     <string name="login_wrong_username_format">Wrong username format. Example format: example@domain.com</string>
 </resources>

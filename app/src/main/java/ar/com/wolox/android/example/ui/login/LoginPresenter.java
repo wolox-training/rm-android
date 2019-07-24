@@ -29,21 +29,18 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      */
     public void onLoginButtonClicked(String username, String password) {
         try {
-            if (this.mUserSession.getUsername() == null ||
-                    this.mUserSession.getPassword() == null) {
-                if (username.isEmpty() || password.isEmpty()) {
-                    if (username.isEmpty()) {
-                        getView().onEmptyUsername();
-                    }
-                    if (password.isEmpty()) {
-                        getView().onEmptyPassword();
-                    }
-                } else if (!evaluateUsernameFormat(username)) {
-                    getView().onWrongUsernameFormat();
+            if (mUserSession.getUsername() == null ||
+                    mUserSession.getPassword() == null) {
+                if (username.isEmpty() && password.isEmpty()) {
+                    getView().onEmptyUsernameAndPassword();
+                } else if (username.isEmpty()) {
+                    getView().onEmptyUsername();
+                } else if (password.isEmpty()) {
+                    getView().onEmptyPassword();
+                } else if (evaluateUsernameFormat(username)) {
+                    Log.d(getClass().getSimpleName(), "onLoginButtonClicked OK");
                 } else {
-                    mUserSession.setUsername(username);
-                    mUserSession.setPassword(password);
-                    getView().goToHomePageScreen();
+                    getView().onWrongUsernameFormat();
                 }
             } else {
                 getView().goToHomePageScreen();
@@ -61,7 +58,22 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         getView().goToTermsConditionsScreen();
     }
 
+    public void saveFormBeforeDestroy(String username) {
+        if (username.isEmpty() && mUserSession.getUsername() != null) {
+            mUserSession.setUsername(null);
+        } else {
+            mUserSession.setUsername(username);
+        }
+    }
+
+    public void restoreFormOnInit() {
+        if (mUserSession.getUsername() != null) {
+            getView().onUsernameAlreadyStored(mUserSession.getUsername());
+        }
+    }
+
     private Boolean evaluateUsernameFormat(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+
 }
