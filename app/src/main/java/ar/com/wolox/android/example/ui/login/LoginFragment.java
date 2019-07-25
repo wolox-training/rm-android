@@ -6,6 +6,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import java.util.Objects;
 
 import ar.com.wolox.android.R;
@@ -69,7 +71,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     }
 
     @Override
-    public void onUsernameAlreadyStored(String usernameStored) {
+    public void onUsernameAlreadyStored(@NonNull String usernameStored) {
         if (username != null) {
             username.setText(usernameStored);
         }

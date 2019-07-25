@@ -1,5 +1,7 @@
 package ar.com.wolox.android.example.ui.login;
 
+import androidx.annotation.NonNull;
+
 /**
  *
  */
@@ -13,11 +15,11 @@ public interface ILoginView {
 
     void onWrongUsernameFormat();
 
-    void onUsernameAlreadyStored(String usernameStored);
+    void goToTermsConditionsScreen();
+
+    void onUsernameAlreadyStored(@NonNull String usernameStored);
 
     void goToHomePageScreen();
 
     void goToSignUpScreen();
-
-    void goToTermsConditionsScreen();
 }
