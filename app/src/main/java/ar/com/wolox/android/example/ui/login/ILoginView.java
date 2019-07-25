@@ -1,5 +1,7 @@
 package ar.com.wolox.android.example.ui.login;
 
+import androidx.annotation.NonNull;
+
 /**
  *
  */
@@ -15,7 +17,7 @@ public interface ILoginView {
 
     void goToTermsConditionsScreen();
 
-    void onUsernameAlreadyStored(String usernameStored);
+    void onUsernameAlreadyStored(@NonNull String usernameStored);
 
     void goToHomePageScreen();
 
