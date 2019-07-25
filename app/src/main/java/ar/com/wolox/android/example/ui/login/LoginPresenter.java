@@ -3,12 +3,23 @@ package ar.com.wolox.android.example.ui.login;
 import android.util.Log;
 import android.util.Patterns;
 
+import androidx.annotation.NonNull;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
 
+import ar.com.wolox.android.example.model.User;
+import ar.com.wolox.android.example.network.LoginService;
 import ar.com.wolox.android.example.utils.UserSession;
 import ar.com.wolox.wolmo.core.presenter.BasePresenter;
+import ar.com.wolox.wolmo.networking.retrofit.RetrofitServices;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  *
@@ -16,10 +27,12 @@ import ar.com.wolox.wolmo.core.presenter.BasePresenter;
 public class LoginPresenter extends BasePresenter<ILoginView> {
 
     private UserSession mUserSession;
+    private RetrofitServices mRetrofitServices;
 
     @Inject
-    public LoginPresenter(UserSession mUserSession) {
+    public LoginPresenter(UserSession mUserSession, RetrofitServices mRetrofitServices) {
         this.mUserSession = mUserSession;
+        this.mRetrofitServices = mRetrofitServices;
     }
 
     /**
@@ -27,7 +40,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      * @param username Username
      * @param password Password
      */
-    public void onLoginButtonClicked(String username, String password) {
+    public void onLoginButtonClicked(@NonNull String username, @NonNull String password) {
         try {
             if (mUserSession.getUsername() == null ||
                     mUserSession.getPassword() == null) {
@@ -38,7 +51,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 } else if (password.isEmpty()) {
                     getView().onEmptyPassword();
                 } else if (evaluateUsernameFormat(username)) {
-                    Log.d(getClass().getSimpleName(), "onLoginButtonClicked OK");
+                    validateUser(username, password);
                 } else {
                     getView().onWrongUsernameFormat();
                 }
@@ -58,7 +71,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         getView().goToTermsConditionsScreen();
     }
 
-    public void saveFormBeforeDestroy(String username) {
+    public void saveFormBeforeDestroy(@NonNull String username) {
         if (username.isEmpty() && mUserSession.getUsername() != null) {
             mUserSession.setUsername(null);
         } else {
@@ -66,7 +79,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         }
     }
 
-    private Boolean evaluateUsernameFormat(String email) {
+    private Boolean evaluateUsernameFormat(@NonNull String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
@@ -74,6 +87,25 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         if (mUserSession.getUsername() != null) {
             getView().onUsernameAlreadyStored(mUserSession.getUsername());
         }
+    }
+
+    private void validateUser(@NonNull String username, @NonNull String password) {
+        mRetrofitServices.getService(LoginService.class).getUserByCredentials(username, password).enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
+                assert response.body() != null;
+                if (response.body().size() > 0) {
+                    Log.d(getClass().getSimpleName(), "validateUser: Ok");
+                } else {
+                    Log.d(getClass().getSimpleName(), "validateUser: NOT Ok");
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
+                Log.e(getClass().getSimpleName(), Objects.requireNonNull(t.getMessage()));
+            }
+        });
     }
 
     @Override
