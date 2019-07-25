@@ -3,6 +3,8 @@ package ar.com.wolox.android.example.ui.login;
 import android.util.Log;
 import android.util.Patterns;
 
+import androidx.annotation.NonNull;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -38,7 +40,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      * @param username Username
      * @param password Password
      */
-    public void onLoginButtonClicked(String username, String password) {
+    public void onLoginButtonClicked(@NonNull String username, @NonNull String password) {
         try {
             if (mUserSession.getAuthenticated()) {
                 getView().goToHomePageScreen();
@@ -68,7 +70,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         getView().goToTermsConditionsScreen();
     }
 
-    public void saveFormBeforeDestroy(String username) {
+    public void saveFormBeforeDestroy(@NonNull String username) {
         if (username.isEmpty() && mUserSession.getUsername() != null) {
             mUserSession.setUsername(null);
         } else {
@@ -76,7 +78,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         }
     }
 
-    private Boolean evaluateUsernameFormat(String email) {
+    private Boolean evaluateUsernameFormat(@NonNull String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
@@ -86,7 +88,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         }
     }
 
-    private void validateUser(String username, String password) {
+    private void validateUser(@NonNull String username, @NonNull String password) {
         mRetrofitServices.getService(LoginService.class).getUserByCredentials(username, password).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {

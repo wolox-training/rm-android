@@ -1,5 +1,7 @@
 package ar.com.wolox.android.example.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -9,41 +11,31 @@ import com.google.gson.annotations.SerializedName;
 public class User {
 
     @SerializedName("id")
-    @Expose
-    private Integer id;
+    @Expose private Integer id;
     @SerializedName("username")
-    @Expose
-    private String username;
+    @Expose private String username;
     @SerializedName("email")
-    @Expose
-    private String email;
+    @Expose private String email;
     @SerializedName("password")
-    @Expose
-    private String password;
+    @Expose private String password;
     @SerializedName("picture")
-    @Expose
-    private String picture;
+    @Expose private String picture;
     @SerializedName("cover")
-    @Expose
-    private String cover;
+    @Expose private String cover;
     @SerializedName("description")
-    @Expose
-    private String description;
+    @Expose private String description;
     @SerializedName("location")
-    @Expose
-    private String location;
+    @Expose private String location;
     @SerializedName("name")
-    @Expose
-    private String name;
+    @Expose private String name;
     @SerializedName("phone")
-    @Expose
-    private String phone;
+    @Expose private String phone;
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(@NonNull Integer id) {
         this.id = id;
     }
 
@@ -51,7 +43,7 @@ public class User {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(@NonNull String username) {
         this.username = username;
     }
 
@@ -59,7 +51,7 @@ public class User {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@NonNull String email) {
         this.email = email;
     }
 
@@ -67,7 +59,7 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(@NonNull String password) {
         this.password = password;
     }
 
@@ -75,7 +67,7 @@ public class User {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(@NonNull String picture) {
         this.picture = picture;
     }
 
@@ -83,7 +75,7 @@ public class User {
         return cover;
     }
 
-    public void setCover(String cover) {
+    public void setCover(@NonNull String cover) {
         this.cover = cover;
     }
 
@@ -91,7 +83,7 @@ public class User {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(@NonNull String description) {
         this.description = description;
     }
 
@@ -99,7 +91,7 @@ public class User {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(@NonNull String location) {
         this.location = location;
     }
 
@@ -107,7 +99,7 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 
@@ -115,7 +107,7 @@ public class User {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(@NonNull String phone) {
         this.phone = phone;
     }
 
