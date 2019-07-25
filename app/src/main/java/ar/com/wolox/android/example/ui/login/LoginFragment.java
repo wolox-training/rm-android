@@ -6,6 +6,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import java.util.Objects;
 
 import ar.com.wolox.android.R;
@@ -23,7 +25,7 @@ import static ar.com.wolox.android.example.BaseConfiguration.TERMS_CONDITIONS_UR
 public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILoginView {
 
     @BindView(R.id.vLoginButton) Button loginButton;
-    @BindView(R.id.vSignupButton) Button signupButton;
+    @BindView(R.id.vSignupButton) Button signUpButton;
     @BindView(R.id.vLoginUsername) EditText username;
     @BindView(R.id.vLoginPassword) EditText password;
     @BindView(R.id.vLoginTermsConditions) TextView termsConditions;
@@ -43,7 +45,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
         loginButton.setOnClickListener(view ->
                 getPresenter().onLoginButtonClicked(username.getText().toString(), password.getText().toString())
         );
-        signupButton.setOnClickListener(view -> getPresenter().onSignUpButtonClicked());
+        signUpButton.setOnClickListener(view -> getPresenter().onSignUpButtonClicked());
         termsConditions.setOnClickListener(view -> getPresenter().onTermsConditionsButtonClicked());
     }
 
@@ -58,8 +60,21 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     }
 
     @Override
+    public void onEmptyUsernameAndPassword() {
+        username.setError(getResources().getString(R.string.login_required_field));
+        password.setError(null);
+    }
+
+    @Override
     public void onWrongUsernameFormat() {
         username.setError(getResources().getString(R.string.login_wrong_username_format));
+    }
+
+    @Override
+    public void onUsernameAlreadyStored(@NonNull String usernameStored) {
+        if (username != null) {
+            username.setText(usernameStored);
+        }
     }
 
     @Override
@@ -81,4 +96,15 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
         startActivity(intent);
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        getPresenter().saveFormBeforeDestroy(username.getText().toString());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getPresenter().attachView(this);
+    }
 }
