@@ -2,8 +2,10 @@ package ar.com.wolox.android.example.ui.login;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +31,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     @BindView(R.id.vLoginUsername) EditText username;
     @BindView(R.id.vLoginPassword) EditText password;
     @BindView(R.id.vLoginTermsConditions) TextView termsConditions;
+    @BindView(R.id.vLoginProgressBar) ProgressBar progressBar;
 
     @Override
     public int layout() {
@@ -96,6 +99,16 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     public void goToTermsConditionsScreen() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_CONDITIONS_URL));
         startActivity(intent);
+    }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

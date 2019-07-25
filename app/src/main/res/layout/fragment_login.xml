@@ -24,10 +24,12 @@
         android:layout_height="@dimen/spacing_none"
         android:alpha="0.8"
         android:background="@drawable/gradient_background_top"
+        app:layout_constraintBottom_toBottomOf="@id/vLoginBackgroundTop"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/vLoginBackgroundTop"/>
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/vLoginLogoLarge"
@@ -43,6 +45,7 @@
         tools:ignore="ContentDescription" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="@dimen/spacing_none"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_large"
@@ -55,31 +58,31 @@
 
         <EditText
             android:id="@+id/vLoginUsername"
+            style="@style/styleBigSpacing"
             android:ems="@integer/ems_default"
             android:hint="@string/login_username"
             android:inputType="textEmailAddress"
-            tools:ignore="Autofill"
-            style="@style/styleBigSpacing"/>
+            tools:ignore="Autofill" />
 
         <EditText
             android:id="@+id/vLoginPassword"
+            style="@style/styleBigSpacing"
             android:ems="@integer/ems_default"
             android:hint="@string/login_password"
             android:inputType="textPassword"
-            tools:ignore="Autofill"
-            style="@style/styleBigSpacing"/>
+            tools:ignore="Autofill" />
 
         <Button
             android:id="@+id/vLoginButton"
-            android:text="@string/login_log_in"
-            style="@style/styleBigSpacing"/>
+            style="@style/styleBigSpacing"
+            android:text="@string/login_log_in" />
 
         <Button
             android:id="@+id/vSignupButton"
-            android:textColor="@color/colorWhite"
+            style="@style/styleBigSpacing"
             android:background="@drawable/button_blue"
             android:text="@string/login_sign_up"
-            style="@style/styleBigSpacing"/>
+            android:textColor="@color/colorWhite" />
     </LinearLayout>
 
     <TextView
@@ -93,5 +96,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         style="@style/styleMediumSpacing"/>
+
+    <ProgressBar
+        android:id="@+id/vLoginProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/vLoginTermsConditions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="?android:attr/progressBarStyle"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

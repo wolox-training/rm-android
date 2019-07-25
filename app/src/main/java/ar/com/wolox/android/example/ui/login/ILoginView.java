@@ -22,4 +22,8 @@ public interface ILoginView {
     void goToHomePageScreen();
 
     void goToSignUpScreen();
+
+    void showProgressBar();
+
+    void hideProgressBar();
 }

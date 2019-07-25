@@ -10,10 +10,12 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import ar.com.wolox.android.R;
 import ar.com.wolox.android.example.model.User;
 import ar.com.wolox.android.example.network.LoginService;
 import ar.com.wolox.android.example.utils.UserSession;
 import ar.com.wolox.wolmo.core.presenter.BasePresenter;
+import ar.com.wolox.wolmo.core.util.ToastFactory;
 import ar.com.wolox.wolmo.networking.retrofit.RetrofitServices;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +28,9 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
     private UserSession mUserSession;
     private RetrofitServices mRetrofitServices;
+
+    @Inject
+    ToastFactory mToastFactory;
 
     @Inject
     public LoginPresenter(UserSession mUserSession, RetrofitServices mRetrofitServices) {
@@ -87,20 +92,26 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
     }
 
     private void validateUser(String username, String password) {
+
+        getView().showProgressBar();
+
         mRetrofitServices.getService(LoginService.class).getUserByCredentials(username, password).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
+                getView().hideProgressBar();
                 assert response.body() != null;
                 if (response.body().size() > 0) {
                     mUserSession.setAuthenticated(true);
                     getView().goToHomePageScreen();
                 } else {
-                    Log.d(getClass().getSimpleName(), "validateUser: NOT Ok");
+                    mToastFactory.show(R.string.login_error_username_password);
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
+                getView().hideProgressBar();
+                mToastFactory.show(Objects.requireNonNull(t.getMessage()));
                 Log.e(getClass().getSimpleName(), Objects.requireNonNull(t.getMessage()));
             }
         });
