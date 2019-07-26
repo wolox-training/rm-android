@@ -42,21 +42,16 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      */
     public void onLoginButtonClicked(@NonNull String username, @NonNull String password) {
         try {
-            if (mUserSession.getUsername() == null ||
-                    mUserSession.getPassword() == null) {
-                if (username.isEmpty() && password.isEmpty()) {
-                    getView().onEmptyUsernameAndPassword();
-                } else if (username.isEmpty()) {
-                    getView().onEmptyUsername();
-                } else if (password.isEmpty()) {
-                    getView().onEmptyPassword();
-                } else if (evaluateUsernameFormat(username)) {
-                    validateUser(username, password);
-                } else {
-                    getView().onWrongUsernameFormat();
-                }
+            if (username.isEmpty() && password.isEmpty()) {
+                getView().onEmptyUsernameAndPassword();
+            } else if (username.isEmpty()) {
+                getView().onEmptyUsername();
+            } else if (password.isEmpty()) {
+                getView().onEmptyPassword();
+            } else if (evaluateUsernameFormat(username)) {
+                validateUser(username, password);
             } else {
-                getView().goToHomePageScreen();
+                getView().onWrongUsernameFormat();
             }
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(), Objects.requireNonNull(e.getMessage()));
@@ -95,7 +90,9 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
                 assert response.body() != null;
                 if (response.body().size() > 0) {
-                    Log.d(getClass().getSimpleName(), "validateUser: Ok");
+                    mUserSession.setUsername(response.body().get(0).getEmail());
+                    mUserSession.setPassword(response.body().get(0).getPassword());
+                    getView().goToHomePageScreen();
                 } else {
                     Log.d(getClass().getSimpleName(), "validateUser: NOT Ok");
                 }
