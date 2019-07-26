@@ -23,15 +23,15 @@ constructor(private val mSharedPreferencesManager: SharedPreferencesManager) {
             mSharedPreferencesManager.store(Extras.UserLogin.USERNAME, username)
         }
 
-    var authenticated: Boolean? = null
+    var password: String? = null
         get() {
             if (field == null) {
-                field = mSharedPreferencesManager.get(Extras.UserLogin.AUTHENTICATED, false)
+                field = mSharedPreferencesManager.get(Extras.UserLogin.PASSWORD, null)
             }
             return field
         }
-        set(authenticated) {
-            field = authenticated
-            mSharedPreferencesManager.store(Extras.UserLogin.AUTHENTICATED, authenticated)
+        set(password) {
+            field = password
+            mSharedPreferencesManager.store(Extras.UserLogin.PASSWORD, password)
         }
 }

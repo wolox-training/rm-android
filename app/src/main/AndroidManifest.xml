@@ -22,16 +22,15 @@
             android:name=".example.ui.viewpager.ViewPagerActivity"
             android:screenOrientation="portrait" />
 
-        <activity
-            android:name=".example.ui.login.LoginActivity"
-            android:screenOrientation="portrait" >
+        <activity android:name=".example.ui.login.LoginActivity" android:screenOrientation="portrait" />
+        <activity android:name=".example.ui.signup.SignUpActivity" android:screenOrientation="portrait" />
+        <activity android:name=".example.ui.home.HomePageActivity" android:screenOrientation="portrait" />
+        <activity android:name=".example.ui.root.RootActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".example.ui.signup.SignUpActivity" android:screenOrientation="portrait" />
-        <activity android:name=".example.ui.home.HomePageActivity" android:screenOrientation="portrait" />
 
     </application>
 

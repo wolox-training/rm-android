@@ -12,6 +12,6 @@ object Extras {
 
     object UserLogin {
         const val USERNAME = "username"
-        const val AUTHENTICATED = "authenticated"
+        const val PASSWORD = "password"
     }
 }
