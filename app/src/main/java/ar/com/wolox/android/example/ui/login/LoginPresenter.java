@@ -1,5 +1,6 @@
 package ar.com.wolox.android.example.ui.login;
 
+import android.app.Application;
 import android.util.Log;
 import android.util.Patterns;
 
@@ -12,10 +13,13 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import ar.com.wolox.android.R;
 import ar.com.wolox.android.example.model.User;
 import ar.com.wolox.android.example.network.LoginService;
+import ar.com.wolox.android.example.utils.NetworkUtils;
 import ar.com.wolox.android.example.utils.UserSession;
 import ar.com.wolox.wolmo.core.presenter.BasePresenter;
+import ar.com.wolox.wolmo.core.util.ToastFactory;
 import ar.com.wolox.wolmo.networking.retrofit.RetrofitServices;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +32,9 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
     private UserSession mUserSession;
     private RetrofitServices mRetrofitServices;
+
+    @Inject ToastFactory mToastFactory;
+    @Inject Application mApplication;
 
     @Inject
     public LoginPresenter(UserSession mUserSession, RetrofitServices mRetrofitServices) {
@@ -82,27 +89,39 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         if (mUserSession.getUsername() != null) {
             getView().onUsernameAlreadyStored(mUserSession.getUsername());
         }
+        if (mUserSession.getPassword() != null) {
+            getView().onPasswordAlreadyStored(mUserSession.getPassword());
+        }
     }
 
     private void validateUser(@NonNull String username, @NonNull String password) {
-        mRetrofitServices.getService(LoginService.class).getUserByCredentials(username, password).enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
-                assert response.body() != null;
-                if (response.body().size() > 0) {
-                    mUserSession.setUsername(response.body().get(0).getEmail());
-                    mUserSession.setPassword(response.body().get(0).getPassword());
-                    getView().goToHomePageScreen();
-                } else {
-                    Log.d(getClass().getSimpleName(), "validateUser: NOT Ok");
+        if (NetworkUtils.isNetworkAvailable(mApplication.getApplicationContext())) {
+            getView().showProgressBar();
+            mRetrofitServices.getService(LoginService.class).getUserByCredentials(username, password).enqueue(new Callback<List<User>>() {
+                @Override
+                public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
+                    getView().hideProgressBar();
+                    assert response.body() != null;
+                    if (response.body().size() > 0) {
+                        mUserSession.setUsername(response.body().get(0).getEmail());
+                        mUserSession.setPassword(response.body().get(0).getPassword());
+                        getView().goToHomePageScreen();
+                    } else {
+                        mUserSession.setPassword(null);
+                        mToastFactory.show(R.string.login_error_username_password);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
-                Log.e(getClass().getSimpleName(), Objects.requireNonNull(t.getMessage()));
-            }
-        });
+                @Override
+                public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
+                    getView().hideProgressBar();
+                    mToastFactory.show(R.string.login_error_service_message);
+                    Log.e(getClass().getSimpleName(), Objects.requireNonNull(t.getMessage()));
+                }
+            });
+        } else {
+            mToastFactory.show(R.string.network_error_message);
+        }
     }
 
     @Override

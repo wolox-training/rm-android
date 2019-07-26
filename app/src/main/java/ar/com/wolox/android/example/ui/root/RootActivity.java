@@ -16,8 +16,10 @@ import ar.com.wolox.android.example.model.User;
 import ar.com.wolox.android.example.network.LoginService;
 import ar.com.wolox.android.example.ui.home.HomePageActivity;
 import ar.com.wolox.android.example.ui.login.LoginActivity;
+import ar.com.wolox.android.example.utils.NetworkUtils;
 import ar.com.wolox.android.example.utils.UserSession;
 import ar.com.wolox.wolmo.core.activity.WolmoActivity;
+import ar.com.wolox.wolmo.core.util.ToastFactory;
 import ar.com.wolox.wolmo.networking.retrofit.RetrofitServices;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +32,7 @@ public class RootActivity extends WolmoActivity {
 
     @Inject UserSession mUserSession;
     @Inject RetrofitServices mRetrofitServices;
+    @Inject ToastFactory mToastFactory;
 
     @Override
     protected int layout() {
@@ -42,13 +45,17 @@ public class RootActivity extends WolmoActivity {
     }
 
     private void redirectToScreen() {
-        if (mUserSession.getUsername() != null &&
-                mUserSession.getPassword() != null) {
-            validateUser(mUserSession.getUsername(), mUserSession.getPassword());
+        if (NetworkUtils.isNetworkAvailable(this)) {
+            if (mUserSession.getUsername() != null &&
+                    mUserSession.getPassword() != null) {
+                validateUser(mUserSession.getUsername(), mUserSession.getPassword());
+            } else {
+                goToLoginScreen();
+            }
         } else {
+            mToastFactory.show(R.string.network_error_message);
             goToLoginScreen();
         }
-
     }
 
     private void validateUser(@NonNull String username, @NonNull String password) {
@@ -67,6 +74,7 @@ public class RootActivity extends WolmoActivity {
 
             @Override
             public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
+                mToastFactory.show(R.string.login_error_service_message);
                 Log.e(getClass().getSimpleName(), Objects.requireNonNull(t.getMessage()));
             }
         });

@@ -19,7 +19,13 @@ public interface ILoginView {
 
     void onUsernameAlreadyStored(@NonNull String usernameStored);
 
+    void onPasswordAlreadyStored(@NonNull String passwordStored);
+
     void goToHomePageScreen();
 
     void goToSignUpScreen();
+
+    void showProgressBar();
+
+    void hideProgressBar();
 }
