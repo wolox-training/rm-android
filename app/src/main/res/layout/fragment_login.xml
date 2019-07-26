@@ -58,31 +58,31 @@
 
         <EditText
             android:id="@+id/vLoginUsername"
-            style="@style/styleBigSpacing"
             android:ems="@integer/ems_default"
             android:hint="@string/login_username"
             android:inputType="textEmailAddress"
-            tools:ignore="Autofill" />
+            tools:ignore="Autofill"
+            style="@style/styleBigSpacing" />
 
         <EditText
             android:id="@+id/vLoginPassword"
-            style="@style/styleBigSpacing"
             android:ems="@integer/ems_default"
             android:hint="@string/login_password"
             android:inputType="textPassword"
-            tools:ignore="Autofill" />
+            tools:ignore="Autofill"
+            style="@style/styleBigSpacing" />
 
         <Button
             android:id="@+id/vLoginButton"
-            style="@style/styleBigSpacing"
-            android:text="@string/login_log_in" />
+            android:text="@string/login_log_in"
+            style="@style/styleBigSpacing"/>
 
         <Button
             android:id="@+id/vSignupButton"
-            style="@style/styleBigSpacing"
             android:background="@drawable/button_blue"
             android:text="@string/login_sign_up"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorWhite"
+            style="@style/styleBigSpacing" />
     </LinearLayout>
 
     <TextView
