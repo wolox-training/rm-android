@@ -47,20 +47,16 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      */
     public void onLoginButtonClicked(@NonNull String username, @NonNull String password) {
         try {
-            if (mUserSession.getAuthenticated()) {
-                getView().goToHomePageScreen();
+            if (username.isEmpty() && password.isEmpty()) {
+                getView().onEmptyUsernameAndPassword();
+            } else if (username.isEmpty()) {
+                getView().onEmptyUsername();
+            } else if (password.isEmpty()) {
+                getView().onEmptyPassword();
+            } else if (evaluateUsernameFormat(username)) {
+                validateUser(username, password);
             } else {
-                if (username.isEmpty() && password.isEmpty()) {
-                    getView().onEmptyUsernameAndPassword();
-                } else if (username.isEmpty()) {
-                    getView().onEmptyUsername();
-                } else if (password.isEmpty()) {
-                    getView().onEmptyPassword();
-                } else if (evaluateUsernameFormat(username)) {
-                    validateUser(username, password);
-                } else {
-                    getView().onWrongUsernameFormat();
-                }
+                getView().onWrongUsernameFormat();
             }
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(), Objects.requireNonNull(e.getMessage()));
@@ -103,7 +99,8 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 getView().hideProgressBar();
                 assert response.body() != null;
                 if (response.body().size() > 0) {
-                    mUserSession.setAuthenticated(true);
+                    mUserSession.setUsername(response.body().get(0).getEmail());
+                    mUserSession.setPassword(response.body().get(0).getPassword());
                     getView().goToHomePageScreen();
                 } else {
                     mToastFactory.show(R.string.login_error_username_password);
@@ -121,10 +118,6 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
     @Override
     public void onViewAttached() {
-        if (mUserSession.getAuthenticated()) {
-            getView().goToHomePageScreen();
-        } else {
-            restoreFormOnInit();
-        }
+        restoreFormOnInit();
     }
 }
