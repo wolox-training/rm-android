@@ -89,10 +89,13 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         if (mUserSession.getUsername() != null) {
             getView().onUsernameAlreadyStored(mUserSession.getUsername());
         }
+        if (mUserSession.getPassword() != null) {
+            getView().onPasswordAlreadyStored(mUserSession.getPassword());
+        }
     }
 
     private void validateUser(@NonNull String username, @NonNull String password) {
-        if (NetworkUtils.isNetworkAvailable(mApplication.getBaseContext())) {
+        if (NetworkUtils.isNetworkAvailable(mApplication.getApplicationContext())) {
             getView().showProgressBar();
             mRetrofitServices.getService(LoginService.class).getUserByCredentials(username, password).enqueue(new Callback<List<User>>() {
                 @Override
@@ -104,6 +107,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                         mUserSession.setPassword(response.body().get(0).getPassword());
                         getView().goToHomePageScreen();
                     } else {
+                        mUserSession.setPassword(null);
                         mToastFactory.show(R.string.login_error_username_password);
                     }
                 }
@@ -111,12 +115,12 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                     @Override
                     public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
                         getView().hideProgressBar();
-                        mToastFactory.show(Objects.requireNonNull(t.getMessage()));
+                        mToastFactory.show(R.string.login_error_service_message);
                         Log.e(getClass().getSimpleName(), Objects.requireNonNull(t.getMessage()));
                     }
                 });
         } else {
-            mToastFactory.show("lost connection");
+            mToastFactory.show(R.string.network_error_message);
         }
     }
 

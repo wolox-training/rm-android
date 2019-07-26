@@ -81,6 +81,13 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     }
 
     @Override
+    public void onPasswordAlreadyStored(@NonNull String passwordStored) {
+        if (password != null) {
+            password.setText(passwordStored);
+        }
+    }
+
+    @Override
     public void goToHomePageScreen() {
         Intent intent = new Intent(getActivity(), HomePageActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
