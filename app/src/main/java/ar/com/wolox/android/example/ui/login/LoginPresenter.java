@@ -112,13 +112,13 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                     }
                 }
 
-                    @Override
-                    public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
-                        getView().hideProgressBar();
-                        mToastFactory.show(R.string.login_error_service_message);
-                        Log.e(getClass().getSimpleName(), Objects.requireNonNull(t.getMessage()));
-                    }
-                });
+                @Override
+                public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
+                    getView().hideProgressBar();
+                    mToastFactory.show(R.string.login_error_service_message);
+                    Log.e(getClass().getSimpleName(), Objects.requireNonNull(t.getMessage()));
+                }
+            });
         } else {
             mToastFactory.show(R.string.network_error_message);
         }
