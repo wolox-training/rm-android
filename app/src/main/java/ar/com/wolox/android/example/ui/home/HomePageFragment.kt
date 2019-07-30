@@ -39,7 +39,7 @@ class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
         return when (position) {
             0 -> NEWS_ACTIVE_TAB
             1 -> PROFILE_ACTIVE_TAB
-            else -> 0
+            else -> DEFAULT_TAB
         }
     }
 
@@ -47,7 +47,7 @@ class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
         return when (position) {
             0 -> NEWS_INACTIVE_TAB
             1 -> PROFILE_INACTIVE_TAB
-            else -> 0
+            else -> DEFAULT_TAB
         }
     }
 
