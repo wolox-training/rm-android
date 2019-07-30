@@ -15,6 +15,7 @@ public class HomePageActivity extends WolmoActivity {
 
     @Override
     protected void init() {
+        replaceFragment(R.id.vActivityBaseContent, new HomePageFragment());
     }
 }
 
