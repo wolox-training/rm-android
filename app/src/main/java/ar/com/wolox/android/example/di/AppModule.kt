@@ -5,6 +5,7 @@ import ar.com.wolox.android.example.ui.example.ExampleFragment
 import ar.com.wolox.android.example.ui.login.LoginActivity
 import ar.com.wolox.android.example.ui.login.LoginFragment
 import ar.com.wolox.android.example.ui.home.HomePageActivity
+import ar.com.wolox.android.example.ui.home.HomePageFragment
 import ar.com.wolox.android.example.ui.root.RootActivity
 import ar.com.wolox.android.example.ui.signup.SignUpActivity
 
@@ -34,4 +35,7 @@ abstract class AppModule {
 
     @ContributesAndroidInjector
     internal abstract fun homepageActivity(): HomePageActivity
+
+    @ContributesAndroidInjector
+    internal abstract fun homepageFragment(): HomePageFragment
 }

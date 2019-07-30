@@ -22,4 +22,7 @@
     <string name="login_error_username_password">Incorrect username or password</string>
     <string name="login_error_service_message">There is something wrong with the service</string>
     <string name="network_error_message">Please verify your network connection</string>
+    <string name="home_title_wolox">Wolox</string>
+    <string name="home_tab_news">NEWS</string>
+    <string name="home_tab_profile">PROFILE</string>
 </resources>
