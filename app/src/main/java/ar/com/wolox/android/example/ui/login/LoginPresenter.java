@@ -2,9 +2,9 @@ package ar.com.wolox.android.example.ui.login;
 
 import android.app.Application;
 import android.util.Log;
-import android.util.Patterns;
 
 import androidx.annotation.NonNull;
+import androidx.core.util.PatternsCompat;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,14 +32,15 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
     private UserSession mUserSession;
     private RetrofitServices mRetrofitServices;
+    private ToastFactory mToastFactory;
 
-    @Inject ToastFactory mToastFactory;
     @Inject Application mApplication;
 
     @Inject
-    public LoginPresenter(UserSession mUserSession, RetrofitServices mRetrofitServices) {
+    public LoginPresenter(UserSession mUserSession, RetrofitServices mRetrofitServices, ToastFactory mToastFactory) {
         this.mUserSession = mUserSession;
         this.mRetrofitServices = mRetrofitServices;
+        this.mToastFactory = mToastFactory;
     }
 
     /**
@@ -82,7 +83,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
     }
 
     private Boolean evaluateUsernameFormat(@NonNull String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        return PatternsCompat.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private void restoreFormOnInit() {
@@ -96,32 +97,40 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
     private void validateUser(@NonNull String username, @NonNull String password) {
         if (NetworkUtils.isNetworkAvailable(mApplication.getApplicationContext())) {
-            getView().showProgressBar();
-            mRetrofitServices.getService(LoginService.class).getUserByCredentials(username, password).enqueue(new Callback<List<User>>() {
-                @Override
-                public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
-                    getView().hideProgressBar();
-                    assert response.body() != null;
-                    if (response.body().size() > 0) {
-                        mUserSession.setUsername(response.body().get(0).getEmail());
-                        mUserSession.setPassword(response.body().get(0).getPassword());
-                        getView().goToHomePageScreen();
-                    } else {
-                        mUserSession.setPassword(null);
-                        mToastFactory.show(R.string.login_error_username_password);
-                    }
-                }
-
-                @Override
-                public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
-                    getView().hideProgressBar();
-                    mToastFactory.show(R.string.login_error_service_message);
-                    Log.e(getClass().getSimpleName(), Objects.requireNonNull(t.getMessage()));
-                }
-            });
+            getUserByCredentials(username, password);
         } else {
             mToastFactory.show(R.string.network_error_message);
         }
+    }
+
+    /**
+     *
+     * @param username Username
+     * @param password Password
+     */
+    public void getUserByCredentials(@NonNull String username, @NonNull String password) {
+        getView().showProgressBar();
+        mRetrofitServices.getService(LoginService.class).getUserByCredentials(username, password).enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
+                getView().hideProgressBar();
+                assert response.body() != null;
+                if (response.body().size() > 0) {
+                    mUserSession.setUsername(response.body().get(0).getEmail());
+                    mUserSession.setPassword(response.body().get(0).getPassword());
+                    getView().goToHomePageScreen();
+                } else {
+                    mUserSession.setPassword(null);
+                    mToastFactory.show(R.string.login_error_username_password);
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
+                getView().hideProgressBar();
+                mToastFactory.show(R.string.login_error_service_message);
+            }
+        });
     }
 
     @Override
