@@ -37,25 +37,27 @@ class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
 
     private fun getSelectIcon(position: Int?): Int {
         return when (position) {
-            0 -> NEWS_ACTIVE_TAB
-            1 -> PROFILE_ACTIVE_TAB
+            NEWS_TAB -> NEWS_ACTIVE_TAB
+            PROFILE_TAB -> PROFILE_ACTIVE_TAB
             else -> DEFAULT_TAB
         }
     }
 
     private fun getUnSelectIcon(position: Int?): Int {
         return when (position) {
-            0 -> NEWS_INACTIVE_TAB
-            1 -> PROFILE_INACTIVE_TAB
+            NEWS_TAB -> NEWS_INACTIVE_TAB
+            PROFILE_TAB -> PROFILE_INACTIVE_TAB
             else -> DEFAULT_TAB
         }
     }
 
     companion object {
-        const val DEFAULT_TAB = 0
-        const val NEWS_ACTIVE_TAB = R.drawable.ic_news_list_on
-        const val NEWS_INACTIVE_TAB = R.drawable.ic_news_list_off
-        const val PROFILE_ACTIVE_TAB = R.drawable.ic_profile_on
-        const val PROFILE_INACTIVE_TAB = R.drawable.ic_profile_off
+        private const val DEFAULT_TAB = 0
+        private const val NEWS_TAB = 0
+        private const val PROFILE_TAB = 1
+        private const val NEWS_ACTIVE_TAB = R.drawable.ic_news_list_on
+        private const val NEWS_INACTIVE_TAB = R.drawable.ic_news_list_off
+        private const val PROFILE_ACTIVE_TAB = R.drawable.ic_profile_on
+        private const val PROFILE_INACTIVE_TAB = R.drawable.ic_profile_off
     }
 }
