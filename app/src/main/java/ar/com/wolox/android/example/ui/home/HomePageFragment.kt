@@ -10,13 +10,11 @@ class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
 
     override fun init() {
         vTabSelection.getTabAt(0)?.let {
-            it.icon = ContextCompat.getDrawable(activity!!, getSelectIcon(0))
+            it.icon = ContextCompat.getDrawable(requireActivity(), getSelectIcon(0))
         }
     }
 
-    override fun layout(): Int {
-        return R.layout.fragment_homepage
-    }
+    override fun layout(): Int = R.layout.fragment_homepage
 
     override fun setListeners() {
         vTabSelection.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -25,13 +23,13 @@ class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
 
             override fun onTabUnselected(p0: TabLayout.Tab?) {
                 p0?.position.let {
-                    p0?.icon = ContextCompat.getDrawable(activity!!, getUnSelectIcon(it))
+                    p0?.icon = ContextCompat.getDrawable(requireActivity(), getUnSelectIcon(it))
                 }
             }
 
             override fun onTabSelected(p0: TabLayout.Tab?) {
                 p0?.position.let {
-                    p0?.icon = ContextCompat.getDrawable(activity!!, getSelectIcon(it))
+                    p0?.icon = ContextCompat.getDrawable(requireActivity(), getSelectIcon(it))
                 }
             }
         })
