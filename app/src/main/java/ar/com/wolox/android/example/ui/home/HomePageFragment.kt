@@ -9,8 +9,8 @@ import kotlinx.android.synthetic.main.fragment_homepage.*
 class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
 
     override fun init() {
-        vTabSelection.getTabAt(0)?.let {
-            it.icon = ContextCompat.getDrawable(requireActivity(), getSelectIcon(0))
+        vTabSelection.getTabAt(DEFAULT_TAB)?.let {
+            it.icon = ContextCompat.getDrawable(requireActivity(), getSelectIcon(DEFAULT_TAB))
         }
     }
 
@@ -37,17 +37,25 @@ class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
 
     private fun getSelectIcon(position: Int?): Int {
         return when (position) {
-            0 -> R.drawable.ic_news_list_on
-            1 -> R.drawable.ic_profile_on
+            0 -> NEWS_ACTIVE_TAB
+            1 -> PROFILE_ACTIVE_TAB
             else -> 0
         }
     }
 
     private fun getUnSelectIcon(position: Int?): Int {
         return when (position) {
-            0 -> R.drawable.ic_news_list_off
-            1 -> R.drawable.ic_profile_off
+            0 -> NEWS_INACTIVE_TAB
+            1 -> PROFILE_INACTIVE_TAB
             else -> 0
         }
+    }
+
+    companion object {
+        const val DEFAULT_TAB = 0
+        const val NEWS_ACTIVE_TAB = R.drawable.ic_news_list_on
+        const val NEWS_INACTIVE_TAB = R.drawable.ic_news_list_off
+        const val PROFILE_ACTIVE_TAB = R.drawable.ic_profile_on
+        const val PROFILE_INACTIVE_TAB = R.drawable.ic_profile_off
     }
 }
