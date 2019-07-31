@@ -21,9 +21,9 @@ class NewsAdapter : ListAdapter<New, NewsAdapter.NewsViewHolder>(NewsDiffCallbac
 
     inner class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindTo(new: New) {
-            itemView.let {
-                it.vNewTitle.text = new.title
-                it.vNewContent.text = new.content
+            itemView.apply {
+                vNewTitle.text = new.title
+                vNewContent.text = new.content
             }
         }
     }
