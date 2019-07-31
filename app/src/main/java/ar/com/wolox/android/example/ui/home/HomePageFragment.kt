@@ -1,14 +1,30 @@
 package ar.com.wolox.android.example.ui.home
 
 import androidx.core.content.ContextCompat
+import androidx.core.util.Pair
+import androidx.fragment.app.Fragment
 import ar.com.wolox.android.R
+import ar.com.wolox.android.example.ui.home.news.NewsFragment
+import ar.com.wolox.android.example.ui.home.profile.ProfileFragment
+import ar.com.wolox.wolmo.core.adapter.viewpager.SimpleFragmentPagerAdapter
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_homepage.*
+import javax.inject.Inject
 
 class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
 
+    @Inject internal lateinit var pageNews: NewsFragment
+    @Inject internal lateinit var pageProfile: ProfileFragment
+    private lateinit var fragmentPagerAdapter: SimpleFragmentPagerAdapter
+
     override fun init() {
+        fragmentPagerAdapter = SimpleFragmentPagerAdapter(childFragmentManager)
+        fragmentPagerAdapter.addFragments(
+                Pair<Fragment, String>(pageNews, TITLE_NEWS),
+                Pair<Fragment, String>(pageProfile, TITLE_PROFILE))
+        vHomeViewPager.adapter = fragmentPagerAdapter
+
         vTabSelection.getTabAt(DEFAULT_TAB)?.let {
             it.icon = ContextCompat.getDrawable(requireActivity(), getSelectIcon(DEFAULT_TAB))
         }
@@ -29,6 +45,7 @@ class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
 
             override fun onTabSelected(p0: TabLayout.Tab?) {
                 p0?.position.let {
+                    presenter.setSelectedViewPager(it ?: DEFAULT_TAB)
                     p0?.icon = ContextCompat.getDrawable(requireActivity(), getSelectIcon(it))
                 }
             }
@@ -59,5 +76,12 @@ class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
         private const val NEWS_INACTIVE_TAB = R.drawable.ic_news_list_off
         private const val PROFILE_ACTIVE_TAB = R.drawable.ic_profile_on
         private const val PROFILE_INACTIVE_TAB = R.drawable.ic_profile_off
+        private const val TITLE_NEWS = "News"
+        private const val TITLE_PROFILE = "Profile"
+    }
+
+    override fun onSelectedViewPager(position: Int) {
+        vHomeViewPager.currentItem = position
+        vHomeViewPager.adapter?.notifyDataSetChanged()
     }
 }
