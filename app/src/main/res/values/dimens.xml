@@ -51,6 +51,10 @@
     <!-- Custom layout elements spacing -->
     <dimen name="spacing_medium_element">48dp</dimen>
     <dimen name="spacing_big_element">56dp</dimen>
+    <dimen name="spacing_biggest_element">88dp</dimen>
+    <dimen name="image_default_size">50dp</dimen>
+    <dimen name="icon_default_size">24dp</dimen>
+    <dimen name="image_big_size">80dp</dimen>
 
 
 </resources>
