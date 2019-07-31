@@ -68,6 +68,11 @@ class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
         }
     }
 
+    override fun onSelectedViewPager(position: Int) {
+        vHomeViewPager.currentItem = position
+        vHomeViewPager.adapter?.notifyDataSetChanged()
+    }
+
     companion object {
         private const val DEFAULT_TAB = 0
         private const val NEWS_TAB = 0
@@ -76,12 +81,7 @@ class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
         private const val NEWS_INACTIVE_TAB = R.drawable.ic_news_list_off
         private const val PROFILE_ACTIVE_TAB = R.drawable.ic_profile_on
         private const val PROFILE_INACTIVE_TAB = R.drawable.ic_profile_off
-        private const val TITLE_NEWS = "News"
+        private const val TITLE_NEWS = "New"
         private const val TITLE_PROFILE = "Profile"
-    }
-
-    override fun onSelectedViewPager(position: Int) {
-        vHomeViewPager.currentItem = position
-        vHomeViewPager.adapter?.notifyDataSetChanged()
     }
 }
