@@ -12,14 +12,14 @@ import javax.inject.Inject
 
 class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INewsView {
 
-    private lateinit var mNewsAdapter: NewsAdapter
+    private lateinit var newsAdapter: NewsAdapter
 
     override fun init() {
         val defaultColor = ContextCompat.getColor(requireActivity(), DEFAULT_PROGRESS_COLOR)
         vNewsSwipeContainer.setColorSchemeColors(defaultColor, defaultColor, defaultColor)
-        mNewsAdapter = NewsAdapter()
+        newsAdapter = NewsAdapter()
         vNewsRecycler.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        vNewsRecycler.adapter = mNewsAdapter
+        vNewsRecycler.adapter = newsAdapter
         presenter.getNews()
     }
 
@@ -48,7 +48,7 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
     }
 
     override fun showNews(news: List<New>) {
-        mNewsAdapter.addAllNews(news)
+        newsAdapter.submitList(news)
     }
 
     companion object {
