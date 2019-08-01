@@ -118,6 +118,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 if (response.body().size() > 0) {
                     mUserSession.setUsername(response.body().get(0).getEmail());
                     mUserSession.setPassword(response.body().get(0).getPassword());
+                    mUserSession.setUserId(response.body().get(0).getId().toString());
                     getView().goToHomePageScreen();
                 } else {
                     mUserSession.setPassword(null);
