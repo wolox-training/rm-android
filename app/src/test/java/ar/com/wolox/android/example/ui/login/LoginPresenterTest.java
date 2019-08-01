@@ -72,7 +72,14 @@ public class LoginPresenterTest {
     public void onCorrectLogin() {
         mLoginPresenter.attachView(mILoginView);
         List<User> responseUser = new ArrayList<>();
-        responseUser.add(new User());
+        User u = new User();
+        u.setId(1);
+        u.setPhone("");
+        u.setName("Susan");
+        u.setEmail("susan.stevens38@example.com");
+        u.setPassword("12345678");
+        u.setUsername("susanstevens");
+        responseUser.add(u);
         Call<List<User>> mockedResponse = (Call<List<User>>) Mockito.mock(Call.class);
         LoginService mockedApiInterface = Mockito.mock(LoginService.class);
 
