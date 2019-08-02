@@ -21,13 +21,17 @@
 
     <TextView
         android:id="@+id/vNewTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/spacing_none"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/static_spacing_largest"
+        android:layout_marginEnd="@dimen/static_spacing_largest"
         android:layout_marginTop="@dimen/static_spacing_medium_extra"
         android:fontFamily="@font/roboto_regular"
         android:textColor="@color/colorTopTitle"
         android:textSize="@dimen/font_medium_more"
+        android:ellipsize="end"
+        android:maxLines="@integer/lines_single"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Ali Connors" />
@@ -42,6 +46,8 @@
         android:fontFamily="@font/roboto_regular"
         android:textColor="@color/colorDetailNew"
         android:textSize="@dimen/font_medium_more"
+        android:ellipsize="end"
+        android:maxLines="@integer/lines_min"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vNewTitle"
@@ -60,12 +66,15 @@
 
     <TextView
         android:id="@+id/vNewTime"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/spacing_none"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_medium_more"
         android:layout_marginTop="@dimen/static_spacing_medium_extra"
         android:layout_marginEnd="@dimen/static_spacing_medium_extra"
         android:textSize="@dimen/font_medium"
+        android:gravity="end"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/vNewTitle"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="15m" />
 

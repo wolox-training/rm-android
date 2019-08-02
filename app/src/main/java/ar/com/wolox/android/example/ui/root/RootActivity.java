@@ -68,6 +68,7 @@ public class RootActivity extends WolmoActivity {
                 } else {
                     mUserSession.setUsername(null);
                     mUserSession.setPassword(null);
+                    mUserSession.setUserId(null);
                     goToLoginScreen();
                 }
             }

@@ -13,4 +13,10 @@ interface INewsView {
     fun setLoadingProgressBarGone()
 
     fun showNews(news: List<New>)
+
+    fun showError()
+
+    fun showConnectionError()
+
+    fun setAdapterUserID(userId: String)
 }
