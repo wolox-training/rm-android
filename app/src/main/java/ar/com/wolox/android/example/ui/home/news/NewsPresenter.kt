@@ -13,8 +13,6 @@ import javax.inject.Inject
 class NewsPresenter @Inject constructor(private val mRetrofitServices: RetrofitServices, private val mUserSession: UserSession, private val mApplication: Application) : BasePresenter<INewsView>() {
 
     private var listNews = mutableListOf<New>()
-    private var offset = 0
-    private var page = 1
 
     override fun onViewAttached() {
         runIfViewAttached { _ -> getNews() }
@@ -28,7 +26,7 @@ class NewsPresenter @Inject constructor(private val mRetrofitServices: RetrofitS
     private fun getNews() {
         view.setLoadingProgressBarVisible()
         if (NetworkUtils.isNetworkAvailable(mApplication.applicationContext)) {
-            mRetrofitServices.getService(NewsService::class.java).getNewsByLimit(offset, LIMIT).enqueue(
+            mRetrofitServices.getService(NewsService::class.java).getNewsByLimit(OFFSET, LIMIT).enqueue(
                     networkCallback {
                         onResponseSuccessful {
                             mUserSession.userId.apply { view.setAdapterUserID(mUserSession.userId!!) }
@@ -53,7 +51,7 @@ class NewsPresenter @Inject constructor(private val mRetrofitServices: RetrofitS
     fun loadMoreNews() {
         view.setLoadingProgressBarVisible()
         if (NetworkUtils.isNetworkAvailable(mApplication.applicationContext)) {
-            mRetrofitServices.getService(NewsService::class.java).getNewsByLimit(offset, LIMIT).enqueue(
+            mRetrofitServices.getService(NewsService::class.java).getNewsByLimit(OFFSET, LIMIT).enqueue(
                     networkCallback {
                         onResponseSuccessful {
                             view.setLoadingProgressBarGone()
@@ -72,16 +70,18 @@ class NewsPresenter @Inject constructor(private val mRetrofitServices: RetrofitS
     }
 
     private fun calculateOffset() {
-        offset = (page - 1) * (LIMIT + 1)
-        page++
+        OFFSET = (PAGE - 1) * (LIMIT + 1)
+        PAGE++
     }
 
     private fun restoreOffset() {
-        offset = 0
-        page = 1
+        OFFSET = 0
+        PAGE = 1
     }
 
     companion object {
         private const val LIMIT = 10
+        private var OFFSET = 0
+        private var PAGE = 1
     }
 }

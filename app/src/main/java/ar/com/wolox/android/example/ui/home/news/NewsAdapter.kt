@@ -36,48 +36,33 @@ class NewsAdapter : ListAdapter<New, NewsAdapter.NewsViewHolder>(NewsDiffCallbac
                 vNewTitle.text = new.title
                 vNewContent.text = new.text
                 vNewTime.text = formatTime(new.createdAt)
-                vNewImage.setImageURI((new.picture).replace(REG_PATTERN, ALLOW_PROTOCOL))
+                vNewImage.setImageURI((new.picture).replace(context.getString(R.string.reg_pattern_protocol).toRegex(),
+                        context.getString(R.string.allow_protocol)))
                 vNewLikeIcon.background = when (new.likes.contains(userId.toInt())) {
-                        true -> ContextCompat.getDrawable(itemView.context, ICON_LIKE_ON)
-                        false -> ContextCompat.getDrawable(itemView.context, ICON_LIKE_OFF)
+                    true -> ContextCompat.getDrawable(context, ICON_LIKE_ON)
+                    false -> ContextCompat.getDrawable(context, ICON_LIKE_OFF)
                 }
             }
         }
 
         @SuppressLint("SimpleDateFormat")
         private fun formatTime(createdAt: String): String {
-            val format = SimpleDateFormat(ISO_8601_24H_FULL_FORMAT)
+            val context = itemView.context
+            val format = SimpleDateFormat(context.getString(R.string.ISO_8601_24h_full_format))
             val prettyTime = PrettyTime()
             return prettyTime.format(format.parse(createdAt))
-                    .replace(REG_PATTERN_YEARS, YEAR_REPLACEMENT)
-                    .replace(REG_PATTERN_MONTHS, MONTH_REPLACEMENT)
-                    .replace(REG_PATTERN_WEEKS, WEEK_REPLACEMENT)
-                    .replace(REG_PATTERN_DAYS, DAY_REPLACEMENT)
-                    .replace(REG_PATTERN_HOURS, HOUR_REPLACEMENT)
-                    .replace(REG_PATTERN_MINUTS, MINUTE_REPLACEMENT)
-                    .replace(REG_PATTERN_NOW, NOW_REPLACEMENT)
+                    .replace(context.getString(R.string.reg_pattern_years).toRegex(), context.getString(R.string.year_replacement))
+                    .replace(context.getString(R.string.reg_pattern_months).toRegex(), context.getString(R.string.month_replacement))
+                    .replace(context.getString(R.string.reg_pattern_weeks).toRegex(), context.getString(R.string.week_replacement))
+                    .replace(context.getString(R.string.reg_pattern_days).toRegex(), context.getString(R.string.day_replacement))
+                    .replace(context.getString(R.string.reg_pattern_hours).toRegex(), context.getString(R.string.hour_replacement))
+                    .replace(context.getString(R.string.reg_pattern_minuts).toRegex(), context.getString(R.string.minuts_replacement))
+                    .replace(context.getString(R.string.reg_pattern_now).toRegex(), context.getString(R.string.now_replacement))
         }
     }
 
     companion object {
-        private val REG_PATTERN = "^http:?:".toRegex()
-        private val REG_PATTERN_YEARS = "\\w*(years ago|year ago)".toRegex()
-        private val REG_PATTERN_MONTHS = "\\w*(month ago|months ago)".toRegex()
-        private val REG_PATTERN_WEEKS = "\\w*(week ago|weeks ago)".toRegex()
-        private val REG_PATTERN_DAYS = "\\w*(days ago|day ago)".toRegex()
-        private val REG_PATTERN_HOURS = "\\w*(hours ago|hour ago)".toRegex()
-        private val REG_PATTERN_MINUTS = "\\w*(minutes ago|minute ago|minute from now)".toRegex()
-        private val REG_PATTERN_NOW = "\\w*(moments ago|moments from now)".toRegex()
-        private const val ALLOW_PROTOCOL = "https:"
-        private const val YEAR_REPLACEMENT = "Y"
-        private const val MONTH_REPLACEMENT = "M"
-        private const val WEEK_REPLACEMENT = "W"
-        private const val DAY_REPLACEMENT = "D"
-        private const val HOUR_REPLACEMENT = "h"
-        private const val MINUTE_REPLACEMENT = "m"
-        private const val NOW_REPLACEMENT = "Now"
-        private const val ICON_LIKE_ON = ar.com.wolox.android.R.drawable.ic_like_on
-        private const val ICON_LIKE_OFF = ar.com.wolox.android.R.drawable.ic_like_off
-        private const val ISO_8601_24H_FULL_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
+        private const val ICON_LIKE_ON = R.drawable.ic_like_on
+        private const val ICON_LIKE_OFF = R.drawable.ic_like_off
     }
 }

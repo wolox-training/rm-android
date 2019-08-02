@@ -1,6 +1,7 @@
 package ar.com.wolox.android.example.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class New(
     @SerializedName("id")val id: Int,
@@ -10,4 +11,4 @@ data class New(
     @SerializedName("picture") val picture: String,
     @SerializedName("text") val text: String,
     @SerializedName("likes") val likes: List<Int>
-)
+) : Serializable
