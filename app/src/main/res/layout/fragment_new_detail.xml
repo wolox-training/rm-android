@@ -67,7 +67,7 @@
                 android:layout_marginStart="@dimen/static_spacing_medium_extra"
                 android:layout_marginTop="@dimen/static_spacing_medium_extra"
                 android:layout_marginEnd="@dimen/static_spacing_largest"
-                android:textColor="@color/chuck_colorPrimary"
+                android:textColor="@color/colorDetailNewTitle"
                 android:textSize="@dimen/font_huge"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
