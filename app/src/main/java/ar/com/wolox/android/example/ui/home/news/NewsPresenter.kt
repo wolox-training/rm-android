@@ -74,9 +74,9 @@ class NewsPresenter @Inject constructor(private val mRetrofitServices: RetrofitS
     }
 
     fun onReceivedLikeEvent(new: New) {
-        listNews.forEach {
-            if (it.id == new.id && it.likes != new.likes) {
-                it.likes = new.likes
+        listNews.mapIndexed { index, n ->
+            if (n.id == new.id && n.likes != new.likes) {
+                listNews[index] = n.copy(likes = new.likes)
                 view.showNews(listNews)
             }
         }

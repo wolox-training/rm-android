@@ -5,7 +5,14 @@ import javax.inject.Inject
 
 class FullScreenPresenter @Inject constructor() : BasePresenter<IFullScreenPictureView>() {
 
+    private lateinit var imageUrl: String
+
     fun onLoadedImageUrl(imageUrl: String) {
+        this.imageUrl = imageUrl
+    }
+
+    override fun onViewAttached() {
+        super.onViewAttached()
         view.showFullScreenPicture(imageUrl)
     }
 }

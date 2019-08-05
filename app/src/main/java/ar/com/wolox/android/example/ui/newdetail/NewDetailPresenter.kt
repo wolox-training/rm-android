@@ -10,23 +10,35 @@ import ar.com.wolox.wolmo.core.presenter.BasePresenter
 import ar.com.wolox.wolmo.networking.retrofit.RetrofitServices
 import javax.inject.Inject
 
-class NewDetailPresenter @Inject constructor(private val mRetrofitServices: RetrofitServices, private val mUserSession: UserSession, private val mApplication: Application) : BasePresenter<INewDetailView>() {
+class NewDetailPresenter @Inject constructor(
+    private val retrofitServices: RetrofitServices,
+    private val userSession: UserSession,
+    private val application: Application
+) : BasePresenter<INewDetailView>() {
 
     private lateinit var new: New
 
     fun loadReceivedNew(new: New) {
         this.new = new
+    }
+
+    override fun onViewAttached() {
+        super.onViewAttached()
+        showNews(new)
+    }
+
+    private fun showNews(new: New) {
         view.showNewDetail(new)
-        view.setLikeIcon(mUserSession.userId!!.toInt() in new.likes)
+        view.setLikeIcon(userSession.userId!!.toInt() in new.likes)
     }
 
     fun refreshNew() {
         view.setLoadingProgressBarVisible()
-        if (NetworkUtils.isNetworkAvailable(mApplication.applicationContext)) {
-            mRetrofitServices.getService(NewsService::class.java).getNewsById(new.id).enqueue(
+        if (NetworkUtils.isNetworkAvailable(application.applicationContext)) {
+            retrofitServices.getService(NewsService::class.java).getNewsById(new.id).enqueue(
                     networkCallback {
                         onResponseSuccessful {
-                            loadReceivedNew(it!!)
+                            showNews(it!!)
                             view.setLoadingProgressBarGone()
                         }
                         onResponseFailed { _, _ -> view.showError() }
@@ -41,12 +53,12 @@ class NewDetailPresenter @Inject constructor(private val mRetrofitServices: Retr
 
     fun onLikeClicked() {
         view.setLikeIconDisable()
-        if (NetworkUtils.isNetworkAvailable(mApplication.applicationContext)) {
+        if (NetworkUtils.isNetworkAvailable(application.applicationContext)) {
             switchLike()
-            mRetrofitServices.getService(NewsService::class.java).setNewLike(new.id, new).enqueue(
+            retrofitServices.getService(NewsService::class.java).setNewLike(new.id, new).enqueue(
                     networkCallback {
                         onResponseSuccessful {
-                            loadReceivedNew(it!!)
+                            showNews(it!!)
                             view.setLikeIconEnable()
                         }
                         onResponseFailed { _, _ ->
@@ -70,10 +82,10 @@ class NewDetailPresenter @Inject constructor(private val mRetrofitServices: Retr
     }
 
     private fun switchLike() {
-        if (mUserSession.userId!!.toInt() in new.likes) {
-            (new.likes as MutableList<Int>).remove(mUserSession.userId!!.toInt())
+        if (userSession.userId!!.toInt() in new.likes) {
+            (new.likes as MutableList<Int>).remove(userSession.userId!!.toInt())
         } else {
-            (new.likes as MutableList<Int>).add(mUserSession.userId!!.toInt())
+            (new.likes as MutableList<Int>).add(userSession.userId!!.toInt())
         }
     }
 }

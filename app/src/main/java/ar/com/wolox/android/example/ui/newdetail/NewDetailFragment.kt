@@ -23,11 +23,19 @@ class NewDetailFragment : WolmoFragment<NewDetailPresenter>(), INewDetailView {
     override fun layout(): Int = R.layout.fragment_new_detail
 
     override fun init() {
-        if (handleArguments(arguments)) {
-            (arguments?.getSerializable(NEW) as New).apply { presenter.loadReceivedNew(this) }
-        }
         val defaultColor = ContextCompat.getColor(requireActivity() as Context, DEFAULT_PROGRESS_COLOR)
         vNewDetailSwipe.setColorSchemeColors(defaultColor, defaultColor, defaultColor)
+    }
+
+    override fun handleArguments(arguments: Bundle?): Boolean {
+        if (arguments != null) {
+            (arguments.getSerializable(NEW) as New).apply {
+                presenter.loadReceivedNew(this)
+                return true
+            }
+        } else {
+            return false
+        }
     }
 
     override fun setListeners() {

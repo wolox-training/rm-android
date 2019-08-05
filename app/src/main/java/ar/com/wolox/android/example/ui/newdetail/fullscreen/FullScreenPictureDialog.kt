@@ -11,8 +11,16 @@ class FullScreenPictureDialog : WolmoDialogFragment<FullScreenPresenter>(), IFul
     override fun layout(): Int = R.layout.dialog_fullscreen_picture
 
     override fun init() {
-        if (handleArguments(arguments)) {
-            arguments?.getString(NEW_PICTURE)?.apply { presenter.onLoadedImageUrl(this) }
+    }
+
+    override fun handleArguments(arguments: Bundle?): Boolean {
+        return if (arguments != null) {
+            arguments.getString(NEW_PICTURE)?.apply {
+                presenter.onLoadedImageUrl(this)
+            }
+            true
+        } else {
+            false
         }
     }
 
