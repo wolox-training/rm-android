@@ -1,15 +1,23 @@
 package ar.com.wolox.android.example.ui.home.news
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
 import ar.com.wolox.android.example.model.New
+import ar.com.wolox.android.example.ui.newdetail.NewDetailActivity
+import ar.com.wolox.android.example.utils.addOnItemClickListener
+import ar.com.wolox.android.example.utils.Extras.News.NEW as NEW
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import ar.com.wolox.wolmo.core.util.ToastFactory
 import kotlinx.android.synthetic.main.fragment_news.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
 class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INewsView {
@@ -20,6 +28,11 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
     private lateinit var linearLayoutManager: LinearLayoutManager
     private val lastVisibleItemPosition: Int
         get() = linearLayoutManager.findLastVisibleItemPosition()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        EventBus.getDefault().register(this)
+    }
 
     override fun layout(): Int = R.layout.fragment_news
 
@@ -41,6 +54,11 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
                 if (!vNewsSwipeContainer.isRefreshing && (lastVisibleItemPosition + 1 == totalItemCount)) {
                     presenter.loadMoreNews()
                 }
+            }
+        })
+        vNewsRecycler.addOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClicked(position: Int, view: View) {
+                presenter.onSelectedItem(position)
             }
         })
     }
@@ -76,6 +94,26 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
 
     override fun setAdapterUserID(userId: String) {
         newsAdapter.setUserId(userId)
+    }
+
+    override fun onItemNewClicked(new: New) {
+        val intent = Intent(requireActivity(), NewDetailActivity::class.java)
+        intent.putExtra(NEW, new)
+        startActivity(intent)
+    }
+
+    interface OnItemClickListener {
+        fun onItemClicked(position: Int, view: View)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun getLike(eventLikes: New) {
+        presenter.onReceivedLikeEvent(eventLikes)
     }
 
     companion object {

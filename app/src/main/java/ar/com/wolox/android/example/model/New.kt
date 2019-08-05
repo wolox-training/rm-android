@@ -10,5 +10,5 @@ data class New(
     @SerializedName("title") val title: String,
     @SerializedName("picture") val picture: String,
     @SerializedName("text") val text: String,
-    @SerializedName("likes") val likes: List<Int>
+    @SerializedName("likes") var likes: List<Int>
 ) : Serializable

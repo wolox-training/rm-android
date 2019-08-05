@@ -19,4 +19,6 @@ interface INewsView {
     fun showConnectionError()
 
     fun setAdapterUserID(userId: String)
+
+    fun onItemNewClicked(new: New)
 }
