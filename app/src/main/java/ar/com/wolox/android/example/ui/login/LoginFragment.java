@@ -10,6 +10,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.tasks.Task;
+
 import java.util.Objects;
 
 import ar.com.wolox.android.R;
@@ -28,10 +35,14 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
 
     @BindView(R.id.vLoginButton) Button loginButton;
     @BindView(R.id.vSignupButton) Button signUpButton;
+    @BindView(R.id.vGoogleSignIn) SignInButton loginGoogleButton;
     @BindView(R.id.vLoginUsername) EditText username;
     @BindView(R.id.vLoginPassword) EditText password;
     @BindView(R.id.vLoginTermsConditions) TextView termsConditions;
     @BindView(R.id.vLoginProgressBar) ProgressBar progressBar;
+
+    private static final int RC_SIGN_IN = 101;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     public int layout() {
@@ -41,6 +52,10 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     @Override
     public void init() {
         ButterKnife.bind(this, Objects.requireNonNull(getActivity()));
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
     }
 
     @Override
@@ -48,6 +63,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
         loginButton.setOnClickListener(view ->
                 getPresenter().onLoginButtonClicked(username.getText().toString(), password.getText().toString())
         );
+        loginGoogleButton.setOnClickListener(view -> getPresenter().onGoogleSignInButtonClicked());
         signUpButton.setOnClickListener(view -> getPresenter().onSignUpButtonClicked());
         termsConditions.setOnClickListener(view -> getPresenter().onTermsConditionsButtonClicked());
     }
@@ -103,6 +119,12 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     }
 
     @Override
+    public void goToSignInGoogleScreen() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
     public void goToTermsConditionsScreen() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_CONDITIONS_URL));
         startActivity(intent);
@@ -128,5 +150,14 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     public void onStart() {
         super.onStart();
         getPresenter().attachView(this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            getPresenter().onGoogleSingedIn(task);
+        }
     }
 }

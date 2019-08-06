@@ -6,6 +6,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.util.PatternsCompat;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -25,6 +29,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static ar.com.wolox.android.example.utils.Extras.UserLogin.LOGGED_APP;
+import static ar.com.wolox.android.example.utils.Extras.UserLogin.LOGGED_GOOGLE;
+
 /**
  *
  */
@@ -33,14 +40,15 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
     private UserSession mUserSession;
     private RetrofitServices mRetrofitServices;
     private ToastFactory mToastFactory;
-
-    @Inject Application mApplication;
+    private Application mApplication;
 
     @Inject
-    public LoginPresenter(UserSession mUserSession, RetrofitServices mRetrofitServices, ToastFactory mToastFactory) {
+    public LoginPresenter(UserSession mUserSession, RetrofitServices mRetrofitServices,
+                          ToastFactory mToastFactory, Application mApplication) {
         this.mUserSession = mUserSession;
         this.mRetrofitServices = mRetrofitServices;
         this.mToastFactory = mToastFactory;
+        this.mApplication = mApplication;
     }
 
     /**
@@ -74,11 +82,43 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         getView().goToTermsConditionsScreen();
     }
 
+    /**
+     *
+     * @param username Username
+     */
     public void saveFormBeforeDestroy(@NonNull String username) {
         if (username.isEmpty() && mUserSession.getUsername() != null) {
-            mUserSession.setUsername(null);
+            if (mUserSession.getLoggedType() != null) {
+                if (!mUserSession.getLoggedType().equals(LOGGED_GOOGLE)) {
+                    mUserSession.setUsername(null);
+                }
+            } else {
+                mUserSession.setUsername(null);
+            }
         } else {
             mUserSession.setUsername(username);
+        }
+    }
+
+    public void onGoogleSignInButtonClicked() {
+        getView().goToSignInGoogleScreen();
+    }
+
+    /**
+     *
+     * @param completedTask Google task connection
+     */
+    public void onGoogleSingedIn(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            if (account != null) {
+                mUserSession.setUsername(account.getEmail());
+                mUserSession.setUserId("1");
+                mUserSession.setLoggedType(LOGGED_GOOGLE);
+                getView().goToHomePageScreen();
+            }
+        } catch (ApiException e) {
+            mToastFactory.show(R.string.login_google_not_completed_message);
         }
     }
 
@@ -119,6 +159,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                     mUserSession.setUsername(response.body().get(0).getEmail());
                     mUserSession.setPassword(response.body().get(0).getPassword());
                     mUserSession.setUserId(response.body().get(0).getId().toString());
+                    mUserSession.setLoggedType(LOGGED_APP);
                     getView().goToHomePageScreen();
                 } else {
                     mUserSession.setPassword(null);

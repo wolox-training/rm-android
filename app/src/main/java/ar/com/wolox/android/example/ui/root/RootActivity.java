@@ -1,8 +1,16 @@
 package ar.com.wolox.android.example.ui.root;
+import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -25,14 +33,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static ar.com.wolox.android.example.utils.Extras.UserLogin.LOGGED_APP;
+import static ar.com.wolox.android.example.utils.Extras.UserLogin.LOGGED_GOOGLE;
+
 /**
  *
  */
 public class RootActivity extends WolmoActivity {
 
+    private static final int RC_SIGN_IN = 101;
     @Inject UserSession mUserSession;
     @Inject RetrofitServices mRetrofitServices;
     @Inject ToastFactory mToastFactory;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected int layout() {
@@ -46,9 +59,26 @@ public class RootActivity extends WolmoActivity {
 
     private void redirectToScreen() {
         if (NetworkUtils.isNetworkAvailable(this)) {
-            if (mUserSession.getUsername() != null &&
-                    mUserSession.getPassword() != null) {
-                validateUser(mUserSession.getUsername(), mUserSession.getPassword());
+            if (mUserSession.getLoggedType() != null) {
+                switch (mUserSession.getLoggedType()) {
+                    case LOGGED_APP:
+                        if (mUserSession.getUsername() != null && mUserSession.getPassword() != null) {
+                            validateUser(mUserSession.getUsername(), mUserSession.getPassword());
+                        } else {
+                            goToLoginScreen();
+                        }
+                        break;
+                    case LOGGED_GOOGLE:
+                        if (mUserSession.getUsername() != null && mUserSession.getUserId() != null &&
+                                GoogleSignIn.getLastSignedInAccount(this) != null) {
+                            validateUserByGoogle();
+                        } else {
+                            goToLoginScreen();
+                        }
+                        break;
+                    default:
+                        goToLoginScreen();
+                }
             } else {
                 goToLoginScreen();
             }
@@ -81,6 +111,48 @@ public class RootActivity extends WolmoActivity {
         });
     }
 
+    private void validateUserByGoogle() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    /**
+     *
+     * @param completedTask Completed task
+     */
+    private void handleSignInResult(@NonNull Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            if (account != null) {
+                mUserSession.setUsername(account.getEmail());
+                mUserSession.setUserId("1");
+                mUserSession.setLoggedType(LOGGED_GOOGLE);
+                goToHomePageScreen();
+            } else {
+                goToLoginScreen();
+            }
+        } catch (ApiException e) {
+            mToastFactory.show(R.string.login_google_not_completed_message);
+            goToLoginScreen();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == RC_SIGN_IN) {
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                handleSignInResult(task);
+            } else {
+                goToLoginScreen();
+            }
+        }
+    }
     private void goToHomePageScreen() {
         Intent intent = new Intent(this, HomePageActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

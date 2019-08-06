@@ -21,6 +21,7 @@
     <string name="login_wrong_username_format">Wrong username format. Example format: example@domain.com</string>
     <string name="login_error_username_password">Incorrect username or password</string>
     <string name="login_error_service_message">There is something wrong with the service</string>
+    <string name="login_google_not_completed_message">Your Log In process by Google was not finished</string>
     <string name="network_error_message">Please verify your network connection</string>
     <string name="home_title_wolox">Wolox</string>
     <string name="home_tab_news">NEWS</string>
@@ -42,4 +43,5 @@
     <string name="minuts_replacement">m</string>
     <string name="now_replacement">Now</string>
     <string name="ISO_8601_24h_full_format">yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX</string>
+    <string name="server_client_id">755081607574-53d4aip1g8lheclp0mi7pnfsmtcvtg0v.apps.googleusercontent.com</string>
 </resources>

@@ -83,6 +83,11 @@
             android:text="@string/login_sign_up"
             android:textColor="@color/colorWhite"
             style="@style/styleBigSpacing" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/vGoogleSignIn"
+            style="@style/styleBigSpacing" />
+
     </LinearLayout>
 
     <TextView

@@ -1,5 +1,7 @@
 package ar.com.wolox.android.example.ui.login;
 
+import android.app.Application;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,13 +33,14 @@ public class LoginPresenterTest {
     @Mock RetrofitServices mRetrofitServices;
     @Mock ILoginView mILoginView;
     @Mock UserSession mUserSession;
+    @Mock Application mApplication;
 
     private LoginPresenter mLoginPresenter;
 
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        mLoginPresenter = new LoginPresenter(mUserSession, mRetrofitServices, mToastFactory);
+        mLoginPresenter = new LoginPresenter(mUserSession, mRetrofitServices, mToastFactory, mApplication);
     }
 
     @Test
