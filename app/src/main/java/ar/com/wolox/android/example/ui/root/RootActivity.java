@@ -46,6 +46,8 @@ public class RootActivity extends WolmoActivity {
     @Inject RetrofitServices mRetrofitServices;
     @Inject ToastFactory mToastFactory;
 
+    private GoogleSignInClient googleSignInClient;
+
     @Override
     protected int layout() {
         return R.layout.activity_base;
@@ -95,10 +97,28 @@ public class RootActivity extends WolmoActivity {
                 if (response.body().size() > 0) {
                     goToHomePageScreen();
                 } else {
-                    mUserSession.setUsername(null);
-                    mUserSession.setPassword(null);
-                    mUserSession.setUserId(null);
-                    mUserSession.setLoggedType(null);
+                    cleanCredentials();
+                    goToLoginScreen();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
+                mToastFactory.show(R.string.login_error_service_message);
+                Log.e(getClass().getSimpleName(), Objects.requireNonNull(t.getMessage()));
+            }
+        });
+    }
+
+    private void validateGoogleUser(@NonNull String username) {
+        mRetrofitServices.getService(LoginService.class).getUserByMail(username).enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
+                assert response.body() != null;
+                if (response.body().size() > 0) {
+                    goToHomePageScreen();
+                } else {
+                    cleanCredentials();
                     goToLoginScreen();
                 }
             }
@@ -115,7 +135,7 @@ public class RootActivity extends WolmoActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
     }
@@ -134,6 +154,13 @@ public class RootActivity extends WolmoActivity {
         finish();
     }
 
+    private void cleanCredentials() {
+        mUserSession.setUsername(null);
+        mUserSession.setPassword(null);
+        mUserSession.setUserId(null);
+        mUserSession.setLoggedType(null);
+    }
+
     /**
      *
      * @param completedTask Completed task
@@ -142,16 +169,21 @@ public class RootActivity extends WolmoActivity {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             if (account != null) {
-                mUserSession.setUsername(account.getEmail());
-                mUserSession.setUserId("1");
-                mUserSession.setLoggedType(LOGGED_GOOGLE);
-                goToHomePageScreen();
+                if (account.getEmail() != null) {
+                    validateGoogleUser(account.getEmail());
+                } else {
+                    mToastFactory.show(R.string.login_google_not_completed_message);
+                    googleSignInClient.signOut();
+                    goToLoginScreen();
+                }
             } else {
-                mToastFactory.show(R.string.login_google_not_completed_message);
+                mToastFactory.show(R.string.login_google_not_completed_error_message);
+                googleSignInClient.signOut();
                 goToLoginScreen();
             }
         } catch (ApiException e) {
-            mToastFactory.show(R.string.login_google_not_completed_message);
+            mToastFactory.show(R.string.login_google_not_completed_error_message);
+            googleSignInClient.signOut();
             goToLoginScreen();
         }
     }

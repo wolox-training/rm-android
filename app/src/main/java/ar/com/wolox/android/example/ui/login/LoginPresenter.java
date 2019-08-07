@@ -94,13 +94,14 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             if (account != null) {
-                mUserSession.setUsername(account.getEmail());
-                mUserSession.setUserId("1");
-                mUserSession.setLoggedType(LOGGED_GOOGLE);
-                getView().goToHomePageScreen();
+                if (account.getEmail() != null) {
+                    getUserByMail(account.getEmail());
+                } else {
+                    mToastFactory.show(R.string.login_google_not_completed_message);
+                }
             }
         } catch (ApiException e) {
-            mToastFactory.show(R.string.login_google_not_completed_message);
+            mToastFactory.show(R.string.login_google_not_completed_error_message);
         }
     }
 
@@ -156,9 +157,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 getView().hideProgressBar();
                 assert response.body() != null;
                 if (response.body().size() > 0) {
-                    mUserSession.setUsername(response.body().get(0).getEmail());
-                    mUserSession.setPassword(response.body().get(0).getPassword());
-                    mUserSession.setUserId(response.body().get(0).getId().toString());
+                    saveCredentials(response.body().get(0));
                     mUserSession.setLoggedType(LOGGED_APP);
                     getView().goToHomePageScreen();
                 } else {
@@ -173,6 +172,48 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 mToastFactory.show(R.string.login_error_service_message);
             }
         });
+    }
+
+    /**
+     *
+     * @param username Username from Google SignIn
+     */
+    public void getUserByMail(@NonNull String username) {
+        getView().showProgressBar();
+        mRetrofitServices.getService(LoginService.class).getUserByMail(username).enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
+                getView().hideProgressBar();
+                assert response.body() != null;
+                if (response.body().size() > 0) {
+                    saveCredentials(response.body().get(0));
+                    mUserSession.setLoggedType(LOGGED_GOOGLE);
+                    getView().goToHomePageScreen();
+                } else {
+                    mUserSession.setPassword(null);
+                    mUserSession.setLoggedType(null);
+                    getView().logOutGoogle();
+                    mToastFactory.show(R.string.login_google_not_completed_message);
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
+                getView().hideProgressBar();
+                getView().logOutGoogle();
+                mToastFactory.show(R.string.login_google_not_completed_error_message);
+            }
+        });
+    }
+
+    /**
+     *
+     * @param user User from login
+     */
+    private void saveCredentials(User user) {
+        mUserSession.setUsername(user.getEmail());
+        mUserSession.setPassword(user.getPassword());
+        mUserSession.setUserId(user.getId().toString());
     }
 
     @Override

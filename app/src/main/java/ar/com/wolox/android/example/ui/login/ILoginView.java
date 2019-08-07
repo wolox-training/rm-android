@@ -30,4 +30,6 @@ public interface ILoginView {
     void showProgressBar();
 
     void hideProgressBar();
+
+    void logOutGoogle();
 }

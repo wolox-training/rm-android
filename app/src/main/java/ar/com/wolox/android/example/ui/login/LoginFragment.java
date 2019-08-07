@@ -141,6 +141,11 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     }
 
     @Override
+    public void logOutGoogle() {
+        mGoogleSignInClient.signOut();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         getPresenter().saveFormBeforeDestroy(username.getText().toString());
