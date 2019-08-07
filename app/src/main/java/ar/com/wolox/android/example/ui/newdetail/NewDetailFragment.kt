@@ -28,14 +28,12 @@ class NewDetailFragment : WolmoFragment<NewDetailPresenter>(), INewDetailView {
     }
 
     override fun handleArguments(arguments: Bundle?): Boolean {
-        if (arguments != null) {
-            (arguments.getSerializable(NEW) as New).apply {
+        return arguments?.let {
+            (it.getSerializable(NEW) as New).apply {
                 presenter.loadReceivedNew(this)
-                return true
             }
-        } else {
-            return false
-        }
+            true
+        } ?: run { false }
     }
 
     override fun setListeners() {

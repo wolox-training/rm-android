@@ -14,14 +14,12 @@ class FullScreenPictureDialog : WolmoDialogFragment<FullScreenPresenter>(), IFul
     }
 
     override fun handleArguments(arguments: Bundle?): Boolean {
-        return if (arguments != null) {
-            arguments.getString(NEW_PICTURE)?.apply {
+        return arguments?.let {
+            (it.getSerializable(NEW_PICTURE) as String).apply {
                 presenter.onLoadedImageUrl(this)
             }
             true
-        } else {
-            false
-        }
+        } ?: run { false }
     }
 
     override fun showFullScreenPicture(imageUrl: String) {
