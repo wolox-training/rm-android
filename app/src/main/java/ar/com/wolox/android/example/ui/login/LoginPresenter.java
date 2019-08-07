@@ -43,8 +43,8 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
     private Application mApplication;
 
     @Inject
-    public LoginPresenter(UserSession mUserSession, RetrofitServices mRetrofitServices,
-                          ToastFactory mToastFactory, Application mApplication) {
+    public LoginPresenter(@NonNull UserSession mUserSession, @NonNull RetrofitServices mRetrofitServices,
+                          @NonNull ToastFactory mToastFactory, @NonNull Application mApplication) {
         this.mUserSession = mUserSession;
         this.mRetrofitServices = mRetrofitServices;
         this.mToastFactory = mToastFactory;
