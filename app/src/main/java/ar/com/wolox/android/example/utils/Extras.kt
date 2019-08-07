@@ -17,5 +17,6 @@ object Extras {
         const val LOGGED_TYPE = "loggedType"
         const val LOGGED_APP = "native"
         const val LOGGED_GOOGLE = "google"
+        const val RC_GOOGLE_SIGN_IN = 101
     }
 }

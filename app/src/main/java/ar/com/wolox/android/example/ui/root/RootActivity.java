@@ -35,17 +35,16 @@ import retrofit2.Response;
 
 import static ar.com.wolox.android.example.utils.Extras.UserLogin.LOGGED_APP;
 import static ar.com.wolox.android.example.utils.Extras.UserLogin.LOGGED_GOOGLE;
+import static ar.com.wolox.android.example.utils.Extras.UserLogin.RC_GOOGLE_SIGN_IN;
 
 /**
  *
  */
 public class RootActivity extends WolmoActivity {
 
-    private static final int RC_SIGN_IN = 101;
     @Inject UserSession mUserSession;
     @Inject RetrofitServices mRetrofitServices;
     @Inject ToastFactory mToastFactory;
-    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected int layout() {
@@ -99,6 +98,7 @@ public class RootActivity extends WolmoActivity {
                     mUserSession.setUsername(null);
                     mUserSession.setPassword(null);
                     mUserSession.setUserId(null);
+                    mUserSession.setLoggedType(null);
                     goToLoginScreen();
                 }
             }
@@ -115,9 +115,23 @@ public class RootActivity extends WolmoActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+    }
+
+    private void goToHomePageScreen() {
+        Intent intent = new Intent(this, HomePageActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
+    private void goToLoginScreen() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 
     /**
@@ -133,6 +147,7 @@ public class RootActivity extends WolmoActivity {
                 mUserSession.setLoggedType(LOGGED_GOOGLE);
                 goToHomePageScreen();
             } else {
+                mToastFactory.show(R.string.login_google_not_completed_message);
                 goToLoginScreen();
             }
         } catch (ApiException e) {
@@ -145,26 +160,13 @@ public class RootActivity extends WolmoActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == RC_SIGN_IN) {
+            if (requestCode == RC_GOOGLE_SIGN_IN) {
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                 handleSignInResult(task);
             } else {
                 goToLoginScreen();
             }
         }
-    }
-    private void goToHomePageScreen() {
-        Intent intent = new Intent(this, HomePageActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
-    }
-
-    private void goToLoginScreen() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
     }
 
 }

@@ -27,6 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static ar.com.wolox.android.example.BaseConfiguration.TERMS_CONDITIONS_URL;
+import static ar.com.wolox.android.example.utils.Extras.UserLogin.RC_GOOGLE_SIGN_IN;
 
 /**
  *
@@ -41,7 +42,6 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     @BindView(R.id.vLoginTermsConditions) TextView termsConditions;
     @BindView(R.id.vLoginProgressBar) ProgressBar progressBar;
 
-    private static final int RC_SIGN_IN = 101;
     private GoogleSignInClient mGoogleSignInClient;
 
     @Override
@@ -121,7 +121,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     @Override
     public void goToSignInGoogleScreen() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class LoginFragment extends WolmoFragment<LoginPresenter> implements ILog
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_GOOGLE_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             getPresenter().onGoogleSingedIn(task);
         }

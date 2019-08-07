@@ -82,24 +82,6 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         getView().goToTermsConditionsScreen();
     }
 
-    /**
-     *
-     * @param username Username
-     */
-    public void saveFormBeforeDestroy(@NonNull String username) {
-        if (username.isEmpty() && mUserSession.getUsername() != null) {
-            if (mUserSession.getLoggedType() != null) {
-                if (!mUserSession.getLoggedType().equals(LOGGED_GOOGLE)) {
-                    mUserSession.setUsername(null);
-                }
-            } else {
-                mUserSession.setUsername(null);
-            }
-        } else {
-            mUserSession.setUsername(username);
-        }
-    }
-
     public void onGoogleSignInButtonClicked() {
         getView().goToSignInGoogleScreen();
     }
@@ -119,6 +101,24 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             }
         } catch (ApiException e) {
             mToastFactory.show(R.string.login_google_not_completed_message);
+        }
+    }
+
+    /**
+     *
+     * @param username Username
+     */
+    public void saveFormBeforeDestroy(@NonNull String username) {
+        if (username.isEmpty() && mUserSession.getUsername() != null) {
+            if (mUserSession.getLoggedType() != null) {
+                if (!mUserSession.getLoggedType().equals(LOGGED_GOOGLE)) {
+                    mUserSession.setUsername(null);
+                }
+            } else {
+                mUserSession.setUsername(null);
+            }
+        } else {
+            mUserSession.setUsername(username);
         }
     }
 
