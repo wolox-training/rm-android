@@ -25,6 +25,7 @@
     <string name="home_title_wolox">Wolox</string>
     <string name="home_tab_news">NEWS</string>
     <string name="home_tab_profile">PROFILE</string>
+    <string name="new_detail_post_title">Post</string>
     <string name="reg_pattern_protocol">^http:?:</string>
     <string name="reg_pattern_years">\w*(years ago|year ago)</string>
     <string name="reg_pattern_months">\w*(month ago|months ago)</string>

@@ -15,4 +15,10 @@ object Extras {
         const val PASSWORD = "password"
         const val USERID = "userid"
     }
+
+    object News {
+        const val NEW = "new"
+        const val NEW_PICTURE = "picture"
+        const val TAG_FULLSCREEN_PICTURE = "fullscreen_picture"
+    }
 }
