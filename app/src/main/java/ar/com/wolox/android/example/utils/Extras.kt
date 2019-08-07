@@ -19,4 +19,10 @@ object Extras {
         const val LOGGED_GOOGLE = "google"
         const val RC_GOOGLE_SIGN_IN = 101
     }
+
+    object News {
+        const val NEW = "new"
+        const val NEW_PICTURE = "picture"
+        const val TAG_FULLSCREEN_PICTURE = "fullscreen_picture"
+    }
 }

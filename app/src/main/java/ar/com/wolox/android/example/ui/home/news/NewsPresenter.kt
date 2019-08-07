@@ -69,6 +69,19 @@ class NewsPresenter @Inject constructor(private val mRetrofitServices: RetrofitS
         }
     }
 
+    fun onSelectedItem(position: Int) {
+        view.onItemNewClicked(listNews[position])
+    }
+
+    fun onReceivedLikeEvent(new: New) {
+        listNews.mapIndexed { index, n ->
+            if (n.id == new.id && n.likes != new.likes) {
+                listNews[index] = n.copy(likes = new.likes)
+                view.showNews(listNews)
+            }
+        }
+    }
+
     private fun calculateOffset() {
         OFFSET = (PAGE - 1) * (LIMIT + 1)
         PAGE++
