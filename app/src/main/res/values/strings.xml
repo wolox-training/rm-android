@@ -21,6 +21,8 @@
     <string name="login_wrong_username_format">Wrong username format. Example format: example@domain.com</string>
     <string name="login_error_username_password">Incorrect username or password</string>
     <string name="login_error_service_message">There is something wrong with the service</string>
+    <string name="login_google_not_completed_message">You must be signed up before with the same email</string>
+    <string name="login_google_not_completed_error_message">Your Log In process by Google was not finished</string>
     <string name="network_error_message">Please verify your network connection</string>
     <string name="home_title_wolox">Wolox</string>
     <string name="home_tab_news">NEWS</string>

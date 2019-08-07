@@ -25,7 +25,11 @@ public interface ILoginView {
 
     void goToSignUpScreen();
 
+    void goToSignInGoogleScreen();
+
     void showProgressBar();
 
     void hideProgressBar();
+
+    void logOutGoogle();
 }

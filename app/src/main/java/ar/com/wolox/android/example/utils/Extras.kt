@@ -14,6 +14,10 @@ object Extras {
         const val USERNAME = "username"
         const val PASSWORD = "password"
         const val USERID = "userid"
+        const val LOGGED_TYPE = "loggedType"
+        const val LOGGED_APP = "native"
+        const val LOGGED_GOOGLE = "google"
+        const val RC_GOOGLE_SIGN_IN = 101
     }
 
     object News {
