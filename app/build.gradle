@@ -51,11 +51,13 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', "YouTubeApiKey", youtube_api_key
         }
 
         debug {
             signingConfig signingConfigs.debug
             testCoverageEnabled = true
+            buildConfigField 'String', "YouTubeApiKey", youtube_api_key
         }
     }
 

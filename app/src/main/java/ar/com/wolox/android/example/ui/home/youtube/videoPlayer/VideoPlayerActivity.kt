@@ -2,8 +2,8 @@ package ar.com.wolox.android.example.ui.home.youtube.videoPlayer
 
 import android.os.Bundle
 import android.util.Log
+import ar.com.wolox.android.BuildConfig
 import ar.com.wolox.android.R
-import ar.com.wolox.android.example.BaseConfiguration
 import ar.com.wolox.android.example.utils.Extras.Youtube.VIDEO_ID
 import ar.com.wolox.wolmo.core.util.ToastFactory
 import com.google.android.youtube.player.YouTubeBaseActivity
@@ -32,7 +32,7 @@ class VideoPlayerActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
             toastFactory.show(R.string.unknown_error)
             finish()
         }
-        vYotubeVideoPlayer.initialize(BaseConfiguration.INTERCEPTOR_YOUTUBE_KEY_VALUE, this)
+        vYotubeVideoPlayer.initialize(BuildConfig.YouTubeApiKey, this)
     }
 
     override fun onInitializationSuccess(provider: YouTubePlayer.Provider?, player: YouTubePlayer?, wasRestored: Boolean) {

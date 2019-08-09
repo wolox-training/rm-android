@@ -1,7 +1,7 @@
 package ar.com.wolox.android.example.network.interceptor
 
+import ar.com.wolox.android.BuildConfig
 import ar.com.wolox.android.example.BaseConfiguration.Companion.INTERCEPTOR_YOUTUBE_KEY
-import ar.com.wolox.android.example.BaseConfiguration.Companion.INTERCEPTOR_YOUTUBE_KEY_VALUE
 import ar.com.wolox.android.example.BaseConfiguration.Companion.INTERCEPTOR_YOUTUBE_MAX_RESULTS
 import ar.com.wolox.android.example.BaseConfiguration.Companion.INTERCEPTOR_YOUTUBE_MAX_RESULTS_VALUE
 import ar.com.wolox.android.example.BaseConfiguration.Companion.INTERCEPTOR_YOUTUBE_PART
@@ -18,7 +18,7 @@ class YoutubeApiInterceptor : Interceptor {
         val originalRequest: Request = chain.request()
         val originalUrl = originalRequest.url()
         val url: HttpUrl = originalUrl.newBuilder()
-                .addQueryParameter(INTERCEPTOR_YOUTUBE_KEY, INTERCEPTOR_YOUTUBE_KEY_VALUE)
+                .addQueryParameter(INTERCEPTOR_YOUTUBE_KEY, BuildConfig.YouTubeApiKey)
                 .addQueryParameter(INTERCEPTOR_YOUTUBE_MAX_RESULTS, INTERCEPTOR_YOUTUBE_MAX_RESULTS_VALUE)
                 .addQueryParameter(INTERCEPTOR_YOUTUBE_PART, INTERCEPTOR_YOUTUBE_PART_VALUE)
                 .addQueryParameter(INTERCEPTOR_YOUTUBE_TYPE, INTERCEPTOR_YOUTUBE_TYPE_VALUE)

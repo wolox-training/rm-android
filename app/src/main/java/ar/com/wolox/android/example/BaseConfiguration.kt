@@ -8,7 +8,6 @@ internal open class BaseConfiguration {
         const val SHARED_PREFERENCES_NAME = "private-shared-prefs"
         const val TERMS_CONDITIONS_URL = "https://www.wolox.com.ar"
         const val INTERCEPTOR_YOUTUBE_KEY = "key"
-        const val INTERCEPTOR_YOUTUBE_KEY_VALUE = "AIzaSyAGec5YpBXF1MsDrpUu-pcvg3j6-gPisYc"
         const val INTERCEPTOR_YOUTUBE_PART = "part"
         const val INTERCEPTOR_YOUTUBE_PART_VALUE = "snippet"
         const val INTERCEPTOR_YOUTUBE_TYPE = "type"
