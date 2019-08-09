@@ -19,7 +19,7 @@ class YoutubeApiInterceptor : Interceptor {
         val originalUrl = originalRequest.url()
         val url: HttpUrl = originalUrl.newBuilder()
                 .addQueryParameter(INTERCEPTOR_YOUTUBE_KEY, BuildConfig.YouTubeApiKey)
-                .addQueryParameter(INTERCEPTOR_YOUTUBE_MAX_RESULTS, INTERCEPTOR_YOUTUBE_MAX_RESULTS_VALUE)
+                .addQueryParameter(INTERCEPTOR_YOUTUBE_MAX_RESULTS, INTERCEPTOR_YOUTUBE_MAX_RESULTS_VALUE.toString())
                 .addQueryParameter(INTERCEPTOR_YOUTUBE_PART, INTERCEPTOR_YOUTUBE_PART_VALUE)
                 .addQueryParameter(INTERCEPTOR_YOUTUBE_TYPE, INTERCEPTOR_YOUTUBE_TYPE_VALUE)
                 .build()

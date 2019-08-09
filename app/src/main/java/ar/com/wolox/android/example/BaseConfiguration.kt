@@ -13,6 +13,6 @@ internal open class BaseConfiguration {
         const val INTERCEPTOR_YOUTUBE_TYPE = "type"
         const val INTERCEPTOR_YOUTUBE_TYPE_VALUE = "video"
         const val INTERCEPTOR_YOUTUBE_MAX_RESULTS = "maxResults"
-        const val INTERCEPTOR_YOUTUBE_MAX_RESULTS_VALUE = "12"
+        const val INTERCEPTOR_YOUTUBE_MAX_RESULTS_VALUE = 12
     }
 }

@@ -16,25 +16,22 @@ class YoutubeApiModule {
 
     @Provides
     @ApplicationScope
-    fun provideHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-                .addInterceptor(YoutubeApiInterceptor())
-                .build()
-    }
+    fun provideHttpClient(): OkHttpClient =
+            OkHttpClient.Builder()
+                    .addInterceptor(YoutubeApiInterceptor())
+                    .build()
 
     @Provides
     @ApplicationScope
-    fun provideRetrofit(@NonNull okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-                .client(okHttpClient)
-                .baseUrl(BaseConfiguration.YOUTUBE_CONFIGURATION_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-    }
+    fun provideRetrofit(@NonNull okHttpClient: OkHttpClient): Retrofit =
+            Retrofit.Builder()
+                    .client(okHttpClient)
+                    .baseUrl(BaseConfiguration.YOUTUBE_CONFIGURATION_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
 
     @Provides
     @ApplicationScope
-    fun provideYoutubeService(@NonNull retrofit: Retrofit): YoutubeService {
-        return retrofit.create(YoutubeService::class.java)
-    }
+    fun provideYoutubeService(@NonNull retrofit: Retrofit): YoutubeService =
+            retrofit.create(YoutubeService::class.java)
 }
