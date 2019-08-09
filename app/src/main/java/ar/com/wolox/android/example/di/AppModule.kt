@@ -9,6 +9,8 @@ import ar.com.wolox.android.example.ui.home.HomePageFragment
 import ar.com.wolox.android.example.ui.home.news.NewsFragment
 import ar.com.wolox.android.example.ui.newdetail.fullscreen.FullScreenPictureDialog
 import ar.com.wolox.android.example.ui.home.profile.ProfileFragment
+import ar.com.wolox.android.example.ui.home.youtube.YoutubeFragment
+import ar.com.wolox.android.example.ui.home.youtube.videoPlayer.VideoPlayerActivity
 import ar.com.wolox.android.example.ui.newdetail.NewDetailActivity
 import ar.com.wolox.android.example.ui.newdetail.NewDetailFragment
 import ar.com.wolox.android.example.ui.root.RootActivity
@@ -51,6 +53,9 @@ abstract class AppModule {
     internal abstract fun profileFragment(): ProfileFragment
 
     @ContributesAndroidInjector
+    internal abstract fun youtubeFragment(): YoutubeFragment
+
+    @ContributesAndroidInjector
     internal abstract fun newDetailActivity(): NewDetailActivity
 
     @ContributesAndroidInjector
@@ -58,4 +63,7 @@ abstract class AppModule {
 
     @ContributesAndroidInjector
     internal abstract fun newFullScreenPictureDialog(): FullScreenPictureDialog
+
+    @ContributesAndroidInjector
+    internal abstract fun videoPlayerActivity(): VideoPlayerActivity
 }
