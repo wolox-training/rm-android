@@ -108,6 +108,8 @@ buildscript {
     ext.prettytime_version = '4.0.1.Final'
     ext.eventbus_version = '3.1.1'
     ext.playservice_auth_version = '17.0.0'
+    ext.youtube_service_version = 'v3-rev212-1.25.0'
+    ext.google_api_client_version = '1.25.0'
 }
 
 dependencies {
@@ -146,6 +148,12 @@ dependencies {
     implementation "org.ocpsoft.prettytime:prettytime:$prettytime_version"
     implementation "org.greenrobot:eventbus:$eventbus_version"
     implementation "com.google.android.gms:play-services-auth:$playservice_auth_version"
+    implementation("com.google.api-client:google-api-client-android:$google_api_client_version") {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    implementation("com.google.apis:google-api-services-youtube:$youtube_service_version") {
+        exclude group: 'org.apache.httpcomponents'
+    }
 
     // Testing dependencies
     testImplementation "junit:junit:$junit_version"

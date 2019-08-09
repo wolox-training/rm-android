@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import ar.com.wolox.android.R
 import ar.com.wolox.android.example.ui.home.news.NewsFragment
 import ar.com.wolox.android.example.ui.home.profile.ProfileFragment
+import ar.com.wolox.android.example.ui.home.youtube.YoutubeFragment
 import ar.com.wolox.wolmo.core.adapter.viewpager.SimpleFragmentPagerAdapter
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import com.google.android.material.tabs.TabLayout
@@ -16,13 +17,15 @@ class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
 
     @Inject internal lateinit var pageNews: NewsFragment
     @Inject internal lateinit var pageProfile: ProfileFragment
+    @Inject internal lateinit var pageYoutube: YoutubeFragment
     private lateinit var fragmentPagerAdapter: SimpleFragmentPagerAdapter
 
     override fun init() {
         fragmentPagerAdapter = SimpleFragmentPagerAdapter(childFragmentManager)
         fragmentPagerAdapter.addFragments(
                 Pair<Fragment, String>(pageNews, TITLE_NEWS),
-                Pair<Fragment, String>(pageProfile, TITLE_PROFILE))
+                Pair<Fragment, String>(pageProfile, TITLE_PROFILE),
+                Pair<Fragment, String>(pageYoutube, TITLE_YOUTUBE))
         vHomeViewPager.adapter = fragmentPagerAdapter
 
         vTabSelection.getTabAt(DEFAULT_TAB)?.let {
@@ -56,6 +59,7 @@ class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
         return when (position) {
             NEWS_TAB -> NEWS_ACTIVE_TAB
             PROFILE_TAB -> PROFILE_ACTIVE_TAB
+            YOUTUBE_TAB -> YOUTUBE_ACTIVE_TAB
             else -> DEFAULT_TAB
         }
     }
@@ -64,6 +68,7 @@ class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
         return when (position) {
             NEWS_TAB -> NEWS_INACTIVE_TAB
             PROFILE_TAB -> PROFILE_INACTIVE_TAB
+            YOUTUBE_TAB -> YOUTUBE_INACTIVE_TAB
             else -> DEFAULT_TAB
         }
     }
@@ -77,11 +82,15 @@ class HomePageFragment : WolmoFragment<HomePagePresenter>(), IHomePageView {
         private const val DEFAULT_TAB = 0
         private const val NEWS_TAB = 0
         private const val PROFILE_TAB = 1
+        private const val YOUTUBE_TAB = 2
         private const val NEWS_ACTIVE_TAB = R.drawable.ic_news_list_on
         private const val NEWS_INACTIVE_TAB = R.drawable.ic_news_list_off
         private const val PROFILE_ACTIVE_TAB = R.drawable.ic_profile_on
         private const val PROFILE_INACTIVE_TAB = R.drawable.ic_profile_off
+        private const val YOUTUBE_ACTIVE_TAB = R.drawable.ic_youtube_on
+        private const val YOUTUBE_INACTIVE_TAB = R.drawable.ic_youtube_off
         private const val TITLE_NEWS = "New"
         private const val TITLE_PROFILE = "Profile"
+        private const val TITLE_YOUTUBE = "Youtube"
     }
 }

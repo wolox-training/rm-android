@@ -25,4 +25,8 @@ object Extras {
         const val NEW_PICTURE = "picture"
         const val TAG_FULLSCREEN_PICTURE = "fullscreen_picture"
     }
+
+    object Youtube {
+        const val VIDEO_ID = "videoId"
+    }
 }

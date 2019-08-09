@@ -22,6 +22,10 @@
             android:name=".example.ui.viewpager.ViewPagerActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".example.ui.home.youtube.videoPlayer.VideoPlayerActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
         <activity android:name=".example.ui.login.LoginActivity" android:screenOrientation="portrait" />
         <activity android:name=".example.ui.newdetail.NewDetailActivity" android:screenOrientation="portrait" />
         <activity android:name=".example.ui.signup.SignUpActivity" android:screenOrientation="portrait" />
