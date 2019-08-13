@@ -1,7 +1,9 @@
 package ar.com.wolox.android.example.ui.newdetail
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.transition.TransitionInflater
 import androidx.core.content.ContextCompat
 import ar.com.wolox.android.R
 import ar.com.wolox.android.example.model.New
@@ -19,6 +21,14 @@ import javax.inject.Inject
 class NewDetailFragment : WolmoFragment<NewDetailPresenter>(), INewDetailView {
 
     @Inject internal lateinit var toastFactory: ToastFactory
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+        }
+        sharedElementReturnTransition = null
+    }
 
     override fun layout(): Int = R.layout.fragment_new_detail
 
@@ -82,6 +92,12 @@ class NewDetailFragment : WolmoFragment<NewDetailPresenter>(), INewDetailView {
 
     override fun setLikeIconDisable() {
         vNewDetailLikeIcon.isEnabled = false
+    }
+
+    override fun setElementTransition(transitionName: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            vNewDetailLikeIcon.transitionName = transitionName
+        }
     }
 
     override fun showFullScreenPicture(imageUrl: String) {

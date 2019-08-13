@@ -1,5 +1,7 @@
 package ar.com.wolox.android.example.ui.home.news
 
+import android.os.Bundle
+import androidx.navigation.fragment.FragmentNavigator
 import ar.com.wolox.android.example.model.New
 
 interface INewsView {
@@ -20,5 +22,5 @@ interface INewsView {
 
     fun setAdapterUserID(userId: String)
 
-    fun onItemNewClicked(new: New)
+    fun onItemNewClicked(bundle: Bundle, extras: FragmentNavigator.Extras)
 }
