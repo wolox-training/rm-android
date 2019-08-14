@@ -22,6 +22,8 @@ class NewDetailFragment : WolmoFragment<NewDetailPresenter>(), INewDetailView {
 
     @Inject internal lateinit var toastFactory: ToastFactory
 
+    override fun layout(): Int = R.layout.fragment_new_detail
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -29,8 +31,6 @@ class NewDetailFragment : WolmoFragment<NewDetailPresenter>(), INewDetailView {
         }
         sharedElementReturnTransition = null
     }
-
-    override fun layout(): Int = R.layout.fragment_new_detail
 
     override fun init() {
         val defaultColor = ContextCompat.getColor(requireActivity() as Context, DEFAULT_PROGRESS_COLOR)

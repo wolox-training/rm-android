@@ -1,12 +1,9 @@
 package ar.com.wolox.android.example.ui.home.news
 
 import android.app.Application
-import android.os.Bundle
 import android.widget.ImageView
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import ar.com.wolox.android.example.model.New
 import ar.com.wolox.android.example.network.NewsService
-import ar.com.wolox.android.example.utils.Extras
 import ar.com.wolox.android.example.utils.NetworkUtils
 import ar.com.wolox.android.example.utils.UserSession
 import ar.com.wolox.android.example.utils.networkCallback
@@ -74,13 +71,7 @@ class NewsPresenter @Inject constructor(private val mRetrofitServices: RetrofitS
     }
 
     fun onSelectedItem(position: Int, viewLike: ImageView) {
-        val new = listNews[position]
-        val bundle = Bundle()
-        bundle.putSerializable(Extras.News.NEW, new)
-        val extras = FragmentNavigatorExtras(
-                viewLike to new.id.toString()
-        )
-        view.onItemNewClicked(bundle, extras)
+        view.onItemNewClicked(listNews[position], viewLike)
     }
 
     fun onReceivedLikeEvent(new: New) {
