@@ -21,4 +21,6 @@ interface INewDetailView {
     fun setLikeIconEnable()
 
     fun setLikeIconDisable()
+
+    fun setElementTransition(transitionName: String)
 }

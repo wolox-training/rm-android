@@ -11,7 +11,6 @@ import ar.com.wolox.android.example.ui.newdetail.fullscreen.FullScreenPictureDia
 import ar.com.wolox.android.example.ui.home.profile.ProfileFragment
 import ar.com.wolox.android.example.ui.home.youtube.YoutubeFragment
 import ar.com.wolox.android.example.ui.home.youtube.videoPlayer.VideoPlayerActivity
-import ar.com.wolox.android.example.ui.newdetail.NewDetailActivity
 import ar.com.wolox.android.example.ui.newdetail.NewDetailFragment
 import ar.com.wolox.android.example.ui.root.RootActivity
 import ar.com.wolox.android.example.ui.signup.SignUpActivity
@@ -54,9 +53,6 @@ abstract class AppModule {
 
     @ContributesAndroidInjector
     internal abstract fun youtubeFragment(): YoutubeFragment
-
-    @ContributesAndroidInjector
-    internal abstract fun newDetailActivity(): NewDetailActivity
 
     @ContributesAndroidInjector
     internal abstract fun newDetailFragment(): NewDetailFragment

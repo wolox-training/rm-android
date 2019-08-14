@@ -10,12 +10,11 @@ public class HomePageActivity extends WolmoActivity {
 
     @Override
     protected int layout() {
-        return R.layout.activity_base;
+        return R.layout.activity_base_nav;
     }
 
     @Override
     protected void init() {
-        replaceFragment(R.id.vActivityBaseContent, new HomePageFragment());
     }
 }
 

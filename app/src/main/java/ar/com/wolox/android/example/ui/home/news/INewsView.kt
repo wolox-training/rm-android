@@ -1,5 +1,6 @@
 package ar.com.wolox.android.example.ui.home.news
 
+import android.widget.ImageView
 import ar.com.wolox.android.example.model.New
 
 interface INewsView {
@@ -20,5 +21,5 @@ interface INewsView {
 
     fun setAdapterUserID(userId: String)
 
-    fun onItemNewClicked(new: New)
+    fun onItemNewClicked(new: New, viewLike: ImageView)
 }

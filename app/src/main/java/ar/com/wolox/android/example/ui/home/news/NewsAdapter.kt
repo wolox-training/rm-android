@@ -1,5 +1,6 @@
 package ar.com.wolox.android.example.ui.home.news
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,9 @@ class NewsAdapter : ListAdapter<New, NewsAdapter.NewsViewHolder>(NewsDiffCallbac
                 vNewTime.text = formatDateToTime(itemView.context, new.createdAt)
                 vNewImage.setImageURI((new.picture).replace(context.getString(R.string.reg_pattern_protocol).toRegex(),
                         context.getString(R.string.allow_protocol)))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    vNewLikeIcon.transitionName = new.id.toString()
+                }
                 vNewLikeIcon.background = when (new.likes.contains(userId.toInt())) {
                     true -> ContextCompat.getDrawable(context, ICON_LIKE_ON)
                     false -> ContextCompat.getDrawable(context, ICON_LIKE_OFF)

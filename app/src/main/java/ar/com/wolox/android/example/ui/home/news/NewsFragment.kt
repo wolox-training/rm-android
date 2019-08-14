@@ -1,20 +1,22 @@
 package ar.com.wolox.android.example.ui.home.news
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.wolox.android.R
 import ar.com.wolox.android.example.model.New
-import ar.com.wolox.android.example.ui.newdetail.NewDetailActivity
+import ar.com.wolox.android.example.utils.Extras.News.NEW
 import ar.com.wolox.android.example.utils.addOnItemClickListener
-import ar.com.wolox.android.example.utils.Extras.News.NEW as NEW
+import ar.com.wolox.android.example.utils.requireNavController
 import ar.com.wolox.wolmo.core.fragment.WolmoFragment
 import ar.com.wolox.wolmo.core.util.ToastFactory
 import kotlinx.android.synthetic.main.fragment_news.*
+import kotlinx.android.synthetic.main.item_new.vNewLikeIcon
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -29,12 +31,12 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
     private val lastVisibleItemPosition: Int
         get() = linearLayoutManager.findLastVisibleItemPosition()
 
+    override fun layout(): Int = R.layout.fragment_news
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         EventBus.getDefault().register(this)
     }
-
-    override fun layout(): Int = R.layout.fragment_news
 
     override fun init() {
         val defaultColor = ContextCompat.getColor(requireActivity() as Context, DEFAULT_PROGRESS_COLOR)
@@ -58,7 +60,7 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         })
         vNewsRecycler.addOnItemClickListener(object : OnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
-                presenter.onSelectedItem(position)
+                presenter.onSelectedItem(position, vNewLikeIcon)
             }
         })
     }
@@ -96,10 +98,11 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
         newsAdapter.setUserId(userId)
     }
 
-    override fun onItemNewClicked(new: New) {
-        val intent = Intent(requireActivity(), NewDetailActivity::class.java)
-        intent.putExtra(NEW, new)
-        startActivity(intent)
+    override fun onItemNewClicked(new: New, viewLike: ImageView) {
+        val bundle = Bundle()
+        bundle.putSerializable(NEW, new)
+        val extras = FragmentNavigatorExtras(viewLike to new.id.toString())
+        requireNavController().navigate(NAVIGATION_TO_NEW_DETAIL, bundle, null, extras)
     }
 
     interface OnItemClickListener {
@@ -118,5 +121,6 @@ class NewsFragment @Inject constructor() : WolmoFragment<NewsPresenter>(), INews
 
     companion object {
         private const val DEFAULT_PROGRESS_COLOR = R.color.colorAccent
+        private const val NAVIGATION_TO_NEW_DETAIL = R.id.action_homePageFragment_to_newDetailFragment
     }
 }

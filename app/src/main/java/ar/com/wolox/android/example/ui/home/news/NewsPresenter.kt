@@ -1,6 +1,7 @@
 package ar.com.wolox.android.example.ui.home.news
 
 import android.app.Application
+import android.widget.ImageView
 import ar.com.wolox.android.example.model.New
 import ar.com.wolox.android.example.network.NewsService
 import ar.com.wolox.android.example.utils.NetworkUtils
@@ -69,8 +70,8 @@ class NewsPresenter @Inject constructor(private val mRetrofitServices: RetrofitS
         }
     }
 
-    fun onSelectedItem(position: Int) {
-        view.onItemNewClicked(listNews[position])
+    fun onSelectedItem(position: Int, viewLike: ImageView) {
+        view.onItemNewClicked(listNews[position], viewLike)
     }
 
     fun onReceivedLikeEvent(new: New) {

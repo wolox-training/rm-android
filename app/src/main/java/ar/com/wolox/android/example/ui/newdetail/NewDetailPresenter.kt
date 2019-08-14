@@ -28,6 +28,7 @@ class NewDetailPresenter @Inject constructor(
     }
 
     private fun showNews(new: New) {
+        view.setElementTransition(new.id.toString())
         view.showNewDetail(new)
         view.setLikeIcon(userSession.userId!!.toInt() in new.likes)
     }
